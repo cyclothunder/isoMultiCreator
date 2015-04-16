@@ -14,12 +14,24 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    dialogmainbuttons.cpp \
-    misc.cpp
+    misc.cpp \
+    dialogstart.cpp \
+    dialogstop.cpp \
+    dialogeject.cpp \
+    dialogstopconfirm.cpp \
+    commands.cpp
 
 HEADERS  += mainwindow.h \
-    dialogmainbuttons.h \
-    misc.h
+    misc.h \
+    dialogstart.h \
+    dialogstop.h \
+    dialogeject.h \
+    dialogstopconfirm.h \
+    commands.h
 
 FORMS    += mainwindow.ui \
-    dialogmainbuttons.ui
+    dialogstart.ui \
+    dialogstop.ui \
+    dialogeject.ui \
+    dialogejectconfirm.ui \
+    dialogstopconfirm.ui

@@ -2,7 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <dialogmainbuttons.h>
+#include <dialogstart.h>
+#include <dialogstop.h>
+#include <dialogeject.h>
 #include <misc.h>
 #include <QStringListModel>
 
@@ -25,15 +27,18 @@ private slots:
 
     void on_pushButtonEject_clicked();
 
+    void on_pushButtonRefresh_clicked();
+
 private:
     Ui::MainWindow *ui;
 
     Misc *deviceInfoList;
+
     QStringListModel *deviceInfoListModel;
 
-    DialogMainButtons *dialog_StartJob;
-    DialogMainButtons *dialog_StopJob;
-    DialogMainButtons *dialog_eject;
+    DialogStart *dialog_StartJob;
+    DialogStop *dialog_StopJob;
+    DialogEject *dialog_eject;
 };
 
 #endif // MAINWINDOW_H
