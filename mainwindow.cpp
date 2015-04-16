@@ -3,7 +3,7 @@
 
 #include <QStringListModel>
 #include <QLayout>
-#include <Qlabel>
+// #include <Qlabel>
 #include <QComboBox>
 
 
