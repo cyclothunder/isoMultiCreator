@@ -19,7 +19,7 @@ void ProcessWorker::process(const QString &parentDevice, const QString &parentDe
     QString destination = parentDestination;
 
     QStringList args;
-    args << "if="+device << "of=/tmp/"+destination << "bs=1";
+    args << "if="+device << "of="+destination << "bs=1";
 
     //dd if=/dev/sr2 of=/tmp/test.iso bs=1
 
