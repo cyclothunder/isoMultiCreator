@@ -9,6 +9,7 @@ class ProcessWorker : public QProcess
     Q_OBJECT
 public:
     explicit ProcessWorker(QObject *parent = 0);
+    QString ProcessState();
 
 private:
 

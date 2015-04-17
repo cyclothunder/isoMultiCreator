@@ -22,6 +22,8 @@ private slots:
     void on_dialogButtonBoxStart_accepted();
     void on_processReadyToRead(const QString &output);
 
+    void on_pushButton_clicked();
+
 private:
     Ui::DialogStart *ui;
 

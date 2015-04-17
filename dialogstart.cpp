@@ -3,6 +3,7 @@
 #include <ProcessWorker.h>
 #include <QDebug>
 #include <QString>
+#include <QFileDialog>
 
 DialogStart::DialogStart(QWidget *parent) :
     QDialog(parent),
@@ -31,11 +32,18 @@ void DialogStart::on_dialogButtonBoxStart_accepted()
     connect(process,SIGNAL(processOutput(QString)),this,SLOT(on_processReadyToRead(QString)));
     process->process(deviceSelected,filenameSelected);
 
-    // if(process->state() == 2) qDebug() << "Running..."; - Check process state!
-
 }
 
 void DialogStart::on_processReadyToRead(const QString &output)
 {
  qDebug() << output;
+}
+
+void DialogStart::on_pushButton_clicked()
+{
+
+    QString fileName = QFileDialog::getSaveFileName(this,
+        tr("Filename"), "/", tr("Iso Files (*.iso)"));
+    ui->lineEditStart->setText(fileName);
+
 }

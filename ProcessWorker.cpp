@@ -52,3 +52,17 @@ void ProcessWorker::onFinished(int exitCode, QProcess::ExitStatus status)
 
     qDebug() << "Process Finished for " + device;
 }
+
+QString ProcessWorker::ProcessState()
+{
+   QString ret;
+
+   if(this->state() == 0) ret = "NotRunning";
+   else
+   {
+       if(this->state() == 1) ret = "Starting";
+       else ret = "Running";
+   }
+
+   return ret;
+}

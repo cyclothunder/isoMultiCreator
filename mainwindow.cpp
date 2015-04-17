@@ -3,8 +3,9 @@
 
 #include <QStringListModel>
 #include <QLayout>
-// #include <Qlabel>
+#include <QFileDialog>
 #include <QComboBox>
+
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -16,7 +17,6 @@ MainWindow::MainWindow(QWidget *parent) :
     deviceInfoList = new Misc();
     deviceInfoListModel = new QStringListModel(deviceInfoList->get_ROdevicesInfo());
     ui->listView_Status->setModel(deviceInfoListModel);
-
 
 }
 
@@ -51,4 +51,7 @@ void MainWindow::on_pushButtonRefresh_clicked()
 
     deviceInfoListModel = new QStringListModel(deviceInfoList->get_ROdevicesInfo());
     ui->listView_Status->setModel(deviceInfoListModel);
+
+
+
 }

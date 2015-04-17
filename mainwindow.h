@@ -6,6 +6,7 @@
 #include <dialogstop.h>
 #include <dialogeject.h>
 #include <misc.h>
+#include <ProcessWorker.h>
 #include <QStringListModel>
 
 namespace Ui {
@@ -39,6 +40,8 @@ private:
     DialogStart *dialog_StartJob;
     DialogStop *dialog_StopJob;
     DialogEject *dialog_eject;
+
+
 };
 
 #endif // MAINWINDOW_H
