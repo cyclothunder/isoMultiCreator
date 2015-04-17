@@ -58,11 +58,8 @@ QString ProcessWorker::ProcessState()
    QString ret;
 
    if(this->state() == 0) ret = "NotRunning";
-   else
-   {
-       if(this->state() == 1) ret = "Starting";
-       else ret = "Running";
-   }
+   if(this->state() == 1) ret = "Starting";
+   if(this->state() == 2) ret = "Running";
 
    return ret;
 }
