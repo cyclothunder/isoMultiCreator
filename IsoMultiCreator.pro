@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     dialogstop.cpp \
     dialogeject.cpp \
     dialogstopconfirm.cpp \
-    commands.cpp
+    commands.cpp \
+    ProcessWorker.cpp
 
 HEADERS  += mainwindow.h \
     misc.h \
@@ -27,7 +28,8 @@ HEADERS  += mainwindow.h \
     dialogstop.h \
     dialogeject.h \
     dialogstopconfirm.h \
-    commands.h
+    commands.h \
+    ProcessWorker.h
 
 FORMS    += mainwindow.ui \
     dialogstart.ui \

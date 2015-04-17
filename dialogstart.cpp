@@ -1,6 +1,6 @@
 #include "dialogstart.h"
 #include "ui_dialogstart.h"
-#include <commands.h>
+#include <ProcessWorker.h>
 #include <QDebug>
 #include <QString>
 
@@ -25,7 +25,16 @@ void DialogStart::on_dialogButtonBoxStart_accepted()
 {
 
     QString deviceSelected = ui->comboBoxStart->currentText();
+    ProcessWorker *process = new ProcessWorker(this);
 
-    startNewJob->startJob(deviceSelected);
+    connect(process,SIGNAL(processOutput(QString)),this,SLOT(on_processReadyToRead(QString)));
+    process->process(deviceSelected,"/tmp/test.iso");
 
+    if(process->state() == 2) qDebug() << "Running...";
+
+}
+
+void DialogStart::on_processReadyToRead(QString output)
+{
+ qDebug() << output;
 }

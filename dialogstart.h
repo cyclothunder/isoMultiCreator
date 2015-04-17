@@ -20,6 +20,7 @@ public:
 
 private slots:
     void on_dialogButtonBoxStart_accepted();
+    void on_processReadyToRead(QString output);
 
 private:
     Ui::DialogStart *ui;
