@@ -34,7 +34,7 @@ void DialogStart::on_dialogButtonBoxStart_accepted()
 
 }
 
-void DialogStart::on_processReadyToRead(QString output)
+void DialogStart::on_processReadyToRead(const QString &output)
 {
  qDebug() << output;
 }

@@ -1,5 +1,7 @@
 #include "ProcessWorker.h"
 #include <QDateTime>
+#include <QDebug>
+
 
 ProcessWorker::ProcessWorker(QObject *parent):
     QProcess(parent)
@@ -16,17 +18,24 @@ void ProcessWorker::process(const QString &parentDevice, const QString &parentDe
     QString destination = parentDestination;
 
     QStringList args;
-    args << device << destination;
+    // args << "if="+device << "of="+destination << "bs=1";
 
-    this->start("cat",args);
+    args << "/";
+    //dd if=/dev/sr2 of=/tmp/test.iso bs=1
+
+    qDebug() << args;
+    this->start("ls",args);
     this->waitForStarted();
 }
 
 void ProcessWorker::onProcessReadyToRead()
 {
 
+    qDebug() << "Running" << this->arguments();
+
     if (!this->isOpen()) this->open(QIODevice::ReadOnly);
     QString output = QString::fromLatin1(this->readAll());
+
 
     // YOUR CODE HERE
 
@@ -35,10 +44,15 @@ void ProcessWorker::onProcessReadyToRead()
 
 void ProcessWorker::onFinished(int exitCode, QProcess::ExitStatus status)
 {
+
+
+
     if (this->state() == 2 || status == QProcess::CrashExit) {
         this->close();
         this->terminate();
         this->waitForFinished(-1);
         emit finished(exitCode);
     } else emit finished(exitCode);
+
+    qDebug() << "Process Finished";
 }
