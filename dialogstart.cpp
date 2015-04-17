@@ -25,12 +25,13 @@ void DialogStart::on_dialogButtonBoxStart_accepted()
 {
 
     QString deviceSelected = ui->comboBoxStart->currentText();
+    QString filenameSelected = ui->lineEditStart->text();
     ProcessWorker *process = new ProcessWorker(this);
 
     connect(process,SIGNAL(processOutput(QString)),this,SLOT(on_processReadyToRead(QString)));
-    process->process(deviceSelected,"/tmp/test.iso");
+    process->process(deviceSelected,filenameSelected);
 
-    if(process->state() == 2) qDebug() << "Running...";
+    // if(process->state() == 2) qDebug() << "Running..."; - Check process state!
 
 }
 
