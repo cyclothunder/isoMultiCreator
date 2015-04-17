@@ -30,6 +30,7 @@ void DialogStart::on_dialogButtonBoxStart_accepted()
     ProcessWorker *process = new ProcessWorker(this);
 
     connect(process,SIGNAL(processOutput(QString)),this,SLOT(on_processReadyToRead(QString)));
+    connect(process,SIGNAL(stateReady(int,QString)),this,SLOT(on_processStatusReady(int,QString)));
     process->process(deviceSelected,filenameSelected);
 
 }
@@ -46,4 +47,9 @@ void DialogStart::on_pushButton_clicked()
         tr("Filename"), "/", tr("Iso Files (*.iso)"));
     ui->lineEditStart->setText(fileName);
 
+}
+
+void DialogStart::on_processStatusReady(const int state, const QString &sourceDevice)
+{
+ emit processStateReady(state,sourceDevice);
 }

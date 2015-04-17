@@ -2,6 +2,7 @@
 #define PROCESSWORKER_H
 
 #include <QProcess>
+#include <QTimer>
 //#include <workoptionsdialog.h>
 
 class ProcessWorker : public QProcess
@@ -12,10 +13,12 @@ public:
     QString ProcessState();
 
 private:
-
+    QString sourceDevice, destinationDevice;
+    QTimer *timer;
 
 signals:
     void processOutput(QString output);
+    void stateReady(int state, QString thisSourceDevice);
 
 public slots:
     void process(const QString &parentDevice, const QString &parentDestination);
@@ -23,6 +26,7 @@ public slots:
 private slots:
     void onProcessReadyToRead();
     void onFinished(int exitCode,QProcess::ExitStatus status);
+    void onStateChange();
 
 };
 

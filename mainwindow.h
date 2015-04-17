@@ -30,6 +30,8 @@ private slots:
 
     void on_pushButtonRefresh_clicked();
 
+    void on_processStateChange(const int state, const QString &sourceDevice);
+
 private:
     Ui::MainWindow *ui;
 

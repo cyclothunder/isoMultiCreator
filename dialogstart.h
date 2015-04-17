@@ -24,6 +24,8 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_processStatusReady(const int state, const QString &sourceDevice);
+
 private:
     Ui::DialogStart *ui;
 
@@ -31,6 +33,9 @@ private:
     QStringListModel *deviceListPathOnlyModel;
 
     Commands *startNewJob;
+
+signals:
+    void processStateReady(int state, QString sourceDevice);
 };
 
 #endif // DIALOGSTART_H

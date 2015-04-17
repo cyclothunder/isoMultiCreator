@@ -19,19 +19,18 @@ QStringList Misc::get_ROdevicesInfo()
 {
 
     QStringList deviceInfo;
-    ProcessWorker procState;
+
 
     foreach (const QStorageInfo &deviceList, QStorageInfo::mountedVolumes()){
         if (deviceList.isValid() /*&& deviceList.isReady()*/) {
             if (deviceList.isReadOnly()) {
-
-               deviceInfo << "Device: " + deviceList.device();
+               QString item;
+               item.append("Device: " + deviceList.device() + "\n");
                // deviceListPath << deviceList.device();
-               deviceInfo << "Label: " + deviceList.displayName();
-               deviceInfo << "Size: " + QString::number(deviceList.bytesTotal()/1024/1024) + " MB"; // Convert to MB
-               deviceInfo << procState.ProcessState();
-               deviceInfo << ""; // Space between devices
-
+               item.append("Label: " + deviceList.displayName() + "\n");
+               item.append("Size: " + QString::number(deviceList.bytesTotal()/1024/1024) + " MB" + "\n"); // Convert to MB
+               item.append("State: Ready\n");
+                deviceInfo << item;
               }
          }
      }
