@@ -47,14 +47,18 @@ void ProcessWorker::onProcessReadyToRead()
 
 void ProcessWorker::onFinished(int exitCode, QProcess::ExitStatus status)
 {
+    QStringList args;
+    args << sourceDevice;
 
     if (this->state() == 2 || status == QProcess::CrashExit) {
+        this->start("/usr/bin/eject",args);
         this->close();
         this->terminate();
         this->waitForFinished(-1);
         emit finished(exitCode);
     } else emit finished(exitCode);
     qDebug() << "Process Finished for " + sourceDevice;
+
 }
 
 void ProcessWorker::onStateChange()

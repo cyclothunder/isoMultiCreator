@@ -60,6 +60,7 @@ void MainWindow::on_pushButtonRefresh_clicked()
 void MainWindow::on_processStateChange(const int state, const QString &sourceDevice)
 {
 
+    QStringList devIsReady;
     qDebug() << "State of device" << sourceDevice << "is" << state;
     for (int i = 0; i < deviceInfoListModel->rowCount();i++) {
         QStringList temp = deviceInfoListModel->index(i).data().toString().split("\n");

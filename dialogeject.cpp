@@ -9,7 +9,8 @@ DialogEject::DialogEject(QWidget *parent) :
 
     deviceListPathOnly = new Misc();
     deviceListPathOnlyModel = new QStringListModel(deviceListPathOnly->get_ROdevicesPath());
-    ui->comboBoxEject->setModel(deviceListPathOnlyModel);
+    // ui->comboBoxEject->setModel(deviceListPathOnlyModel);
+
 }
 
 DialogEject::~DialogEject()

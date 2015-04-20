@@ -19,12 +19,16 @@ public:
     ~DialogStart();
 
 private slots:
-    void on_dialogButtonBoxStart_accepted();
+
     void on_processReadyToRead(const QString &output);
 
     void on_pushButton_clicked();
 
     void on_processStatusReady(const int state, const QString &sourceDevice);
+
+    void on_buttonBox_accepted();
+
+    void on_buttonBox_rejected();
 
 private:
     Ui::DialogStart *ui;

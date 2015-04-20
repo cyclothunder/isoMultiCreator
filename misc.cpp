@@ -1,6 +1,7 @@
 #include "misc.h"
 #include "ProcessWorker.h"
 #include <QStringList>
+#include <QStringListModel>
 #include <QStorageInfo>
 
 Misc::Misc()
@@ -52,7 +53,6 @@ QStringList Misc::get_ROdevicesPath()
                   }
              }
          }
-
 
     return deviceListPath;
 
