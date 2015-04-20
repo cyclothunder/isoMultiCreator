@@ -78,3 +78,4 @@ QString ProcessWorker::ProcessState()
 
    return ret;
 }
+

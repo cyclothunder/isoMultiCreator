@@ -58,9 +58,11 @@ void DialogStart::on_buttonBox_accepted()
         connect(process,SIGNAL(stateReady(int,QString)),this,SLOT(on_processStatusReady(int,QString)));
 
         process->process(deviceSelected,filenameSelected);
+
     } else {
         ui->label_filename->setVisible(true);
     }
+
 
     this->close();
 

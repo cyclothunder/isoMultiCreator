@@ -1,5 +1,7 @@
 #include "dialogeject.h"
 #include "ui_dialogeject.h"
+#include <QProcess>
+#include <QStringList>
 
 DialogEject::DialogEject(QWidget *parent) :
     QDialog(parent),
@@ -9,7 +11,8 @@ DialogEject::DialogEject(QWidget *parent) :
 
     deviceListPathOnly = new Misc();
     deviceListPathOnlyModel = new QStringListModel(deviceListPathOnly->get_ROdevicesPath());
-    // ui->comboBoxEject->setModel(deviceListPathOnlyModel);
+    ui->comboBoxEject->setModel(deviceListPathOnlyModel);
+
 
 }
 
@@ -20,7 +23,10 @@ DialogEject::~DialogEject()
 
 void DialogEject::on_buttonBox_accepted()
 {
-    dialog_StopConfirm = new DialogStopConfirm(this);
-    dialog_StopConfirm->setWindowTitle("WARNING");
-    dialog_StopConfirm->show();
+
+    QStringList args;
+
+    args << ui->comboBoxEject->currentText();
+    QProcess::execute("eject",args);
+
 }

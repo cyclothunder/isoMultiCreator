@@ -20,6 +20,7 @@ DialogStop::~DialogStop()
 
 void DialogStop::on_buttonBoxStop_accepted()
 {
+
     dialog_StopConfirm = new DialogStopConfirm(this);
     dialog_StopConfirm->setWindowTitle("WARNING");
     dialog_StopConfirm->show();
