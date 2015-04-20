@@ -38,7 +38,7 @@ private:
 
     Misc *deviceInfoList;
 
-    QStringListModel *deviceInfoListModel;
+    QStringListModel *deviceInfoListModel, *deviceInfoListModel2;
 
     DialogStart *dialog_StartJob;
     DialogStop *dialog_StopJob;
