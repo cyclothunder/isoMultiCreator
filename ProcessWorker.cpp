@@ -51,6 +51,7 @@ void ProcessWorker::onFinished(int exitCode, QProcess::ExitStatus status)
     args << sourceDevice;
 
     if (this->state() == 2 || status == QProcess::CrashExit) {
+        qDebug() << args;
         this->start("eject",args);
         this->close();
         this->terminate();
