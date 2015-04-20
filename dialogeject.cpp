@@ -1,5 +1,6 @@
 #include "dialogeject.h"
 #include "ui_dialogeject.h"
+#include "ProcessWorker.h"
 #include <QProcess>
 #include <QStringList>
 
@@ -24,9 +25,18 @@ DialogEject::~DialogEject()
 void DialogEject::on_buttonBox_accepted()
 {
 
-    QStringList args;
+    ProcessWorker *process = new ProcessWorker(this);
+    QString deviceSelected = ui->comboBoxEject->currentText();
 
-    args << ui->comboBoxEject->currentText();
-    QProcess::execute("eject",args);
+    connect(process,SIGNAL(stateReady(int,QString)),this,SLOT(on_processStatusReady(int,QString)));
 
+    process->processEject(deviceSelected);
+
+
+
+}
+
+void DialogEject::on_processStatusReady(const int state, const QString &sourceDevice)
+{
+ emit processStateReady(state,sourceDevice);
 }

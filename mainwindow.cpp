@@ -29,6 +29,7 @@ void MainWindow::on_pushButton_Start_clicked()
 {
     dialog_StartJob = new DialogStart(this);
     connect(dialog_StartJob,SIGNAL(processStateReady(int,QString)),this,SLOT(on_processStateChange(int,QString)));
+    connect(dialog_eject,SIGNAL(processStateReady(int,QString)),this,SLOT(on_processStateChange(int,QString)));
     dialog_StartJob->setWindowTitle("Start Job");
     dialog_StartJob->show();
 }

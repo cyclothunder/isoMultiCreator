@@ -18,8 +18,12 @@ public:
     explicit DialogEject(QWidget *parent = 0);
     ~DialogEject();
 
+signals:
+    void processStateReady(int state, QString sourceDevice);
+
 private slots:
     void on_buttonBox_accepted();
+    void on_processStatusReady(const int state, const QString &sourceDevice);
 
 private:
     Ui::DialogEject *ui;

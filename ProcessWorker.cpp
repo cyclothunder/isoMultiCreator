@@ -34,6 +34,21 @@ void ProcessWorker::process(const QString &parentDevice, const QString &parentDe
 
 }
 
+void ProcessWorker::processEject(const QString &parentDevice)
+{
+    sourceDevice = parentDevice;
+
+    QStringList args;
+    args << sourceDevice;
+
+    qDebug() << "Starting process for ejecting " + parentDevice;
+    this->start("eject",args);
+    this->waitForStarted();
+
+
+
+}
+
 void ProcessWorker::onProcessReadyToRead()
 {
 

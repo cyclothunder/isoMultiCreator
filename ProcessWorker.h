@@ -22,6 +22,7 @@ signals:
 
 public slots:
     void process(const QString &parentDevice, const QString &parentDestination);
+    void processEject(const QString &parentDevice);
 
 private slots:
     void onProcessReadyToRead();
