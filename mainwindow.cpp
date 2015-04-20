@@ -87,4 +87,6 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
 
     }
 
+    ui->listView_Status->setModel(deviceInfoListModel);
+
 }
