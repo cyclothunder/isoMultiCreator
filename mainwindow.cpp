@@ -29,7 +29,7 @@ void MainWindow::on_pushButton_Start_clicked()
 {
     dialog_StartJob = new DialogStart(this);
     connect(dialog_StartJob,SIGNAL(processStateReady(int,QString)),this,SLOT(on_processStateChange(int,QString)));
-    connect(dialog_eject,SIGNAL(processStateReady(int,QString)),this,SLOT(on_processStateChange(int,QString)));
+    // connect(dialog_eject,SIGNAL(processStateReady(int,QString)),this,SLOT(on_processStateChange(int,QString)));
     dialog_StartJob->setWindowTitle("Start Job");
     dialog_StartJob->show();
 }
@@ -63,9 +63,9 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
 
 
     qDebug() << "State of device" << sourceDevice << "is" << state;
-    deviceInfoListModel2 = new QStringListModel(deviceInfoList->get_ROdevicesInfo());
-    for (int i = 0; i < deviceInfoListModel2->rowCount();i++) {
-        QStringList temp = deviceInfoListModel2->index(i).data().toString().split("\n");
+    deviceInfoListModel = new QStringListModel(deviceInfoList->get_ROdevicesInfo());
+    for (int i = 0; i < deviceInfoListModel->rowCount();i++) {
+        QStringList temp = deviceInfoListModel->index(i).data().toString().split("\n");
         QString strState = "Unknown";
         if (temp.at(0).contains("Device: " + sourceDevice)) {
             switch (state) {
@@ -82,11 +82,11 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
 
 
             temp.replace(3,"State: " + strState );
-            deviceInfoListModel2->setData(deviceInfoListModel2->index(i),temp.join("\n"));
+            deviceInfoListModel->setData(deviceInfoListModel->index(i),temp.join("\n"));
         }
 
     }
 
-    ui->listView_Status->setModel(deviceInfoListModel2);
-
+    ui->listView_Status->setModel(deviceInfoListModel);
+    emit deviceInfoListModel;
 }

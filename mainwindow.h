@@ -22,6 +22,9 @@ public:
     ~MainWindow();
 
 
+signals:
+    void on_processStateChange();
+
 private slots:
     void on_pushButton_Start_clicked();
 
@@ -38,7 +41,7 @@ private:
 
     Misc *deviceInfoList;
 
-    QStringListModel *deviceInfoListModel, *deviceInfoListModel2;
+    QStringListModel *deviceInfoListModel;
 
     DialogStart *dialog_StartJob;
     DialogStop *dialog_StopJob;

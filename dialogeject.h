@@ -5,6 +5,7 @@
 #include <misc.h>
 #include <QStringListModel>
 #include <dialogstopconfirm.h>
+#include <mainwindow.h>
 
 namespace Ui {
 class DialogEject;
@@ -24,11 +25,14 @@ signals:
 private slots:
     void on_buttonBox_accepted();
     void on_processStatusReady(const int state, const QString &sourceDevice);
+    void devices_Ready_MainWindow();
 
 private:
     Ui::DialogEject *ui;
 
     Misc *deviceListPathOnly;
+    QStringListModel *deviceInfoListModel, *model2;
+    Misc *deviceInfoList;
     QStringListModel *deviceListPathOnlyModel;
 
     DialogStopConfirm *dialog_StopConfirm;
