@@ -62,7 +62,7 @@ void DialogStart::on_buttonBox_accepted()
         ui->label_filename->setVisible(true);
     }
 
-
+    this->close();
 
 }
 
