@@ -11,11 +11,12 @@ DialogStart::DialogStart(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    deviceListPathOnly = new Misc();
-    deviceListPathOnlyModel = new QStringListModel(deviceListPathOnly->get_ROdevicesPath());
-    ui->comboBoxStart->setModel(deviceListPathOnlyModel);
-    ui->label_filename->setVisible(false);
+    // connect(dialog_StartJob,SIGNAL(processStateReady(int,QString)),this,SLOT(on_processStateChange(int,QString)))
 
+
+
+   // ui->comboBoxStart->setModel(deviceListPathOnlyModel);
+    ui->label_filename->setVisible(false);
 }
 
 DialogStart::~DialogStart()
@@ -58,13 +59,15 @@ void DialogStart::on_buttonBox_accepted()
         connect(process,SIGNAL(stateReady(int,QString)),this,SLOT(on_processStatusReady(int,QString)));
 
         process->process(deviceSelected,filenameSelected);
+        this->close();
 
     } else {
+        ui->label_filename->setStyleSheet("QLabel { color : red; }");
         ui->label_filename->setVisible(true);
     }
 
 
-    this->close();
+
 
 }
 

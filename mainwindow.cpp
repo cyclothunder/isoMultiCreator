@@ -7,7 +7,6 @@
 #include <QComboBox>
 
 
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -71,6 +70,7 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
             switch (state) {
             case 0:
                 strState = "Ready";
+                deviceReadyOnly << sourceDevice;
                 break;
             case 1:
                 strState = "Starting";
@@ -83,10 +83,22 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
 
             temp.replace(3,"State: " + strState );
             deviceInfoListModel->setData(deviceInfoListModel->index(i),temp.join("\n"));
-        }
+
 
     }
 
+
+
     ui->listView_Status->setModel(deviceInfoListModel);
-    emit deviceInfoListModel;
+//    devListUpdated = deviceInfoListModel;
+//    devListUpdated(deviceInfoListModelStateUpdated);
+    // emit deviceInfoListModel;
 }
+
+//QStringListModel devListUpdated(QStringListModel parentDevList){
+//    QStringListModel devListUp = parentDevList;
+
+//    return devListUp;    
+
+}
+

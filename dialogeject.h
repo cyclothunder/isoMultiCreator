@@ -5,7 +5,7 @@
 #include <misc.h>
 #include <QStringListModel>
 #include <dialogstopconfirm.h>
-#include <mainwindow.h>
+// #include <mainwindow.h>
 
 namespace Ui {
 class DialogEject;
@@ -19,20 +19,27 @@ public:
     explicit DialogEject(QWidget *parent = 0);
     ~DialogEject();
 
+
+    // QStringListModel *devListModel;
+
+
 signals:
-    void processStateReady(int state, QString sourceDevice);
+   // void processStateReady(int state, QString sourceDevice);
 
 private slots:
     void on_buttonBox_accepted();
-    void on_processStatusReady(const int state, const QString &sourceDevice);
-    void devices_Ready_MainWindow();
+   // void on_processStatusReady(const int state, const QString &sourceDevice);
+   // void devices_Ready_MainWindow();
+
+   // void on_processStateChange(const int state, const QString &sourceDevice);
 
 private:
     Ui::DialogEject *ui;
 
-    Misc *deviceListPathOnly;
-    QStringListModel *deviceInfoListModel, *model2;
     Misc *deviceInfoList;
+    Misc *deviceListPathOnly;
+    QStringListModel *deviceInfoListModel;
+
     QStringListModel *deviceListPathOnlyModel;
 
     DialogStopConfirm *dialog_StopConfirm;

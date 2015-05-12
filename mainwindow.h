@@ -2,11 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <dialogstart.h>
-#include <dialogstop.h>
-#include <dialogeject.h>
-#include <misc.h>
-#include <ProcessWorker.h>
+#include "dialogstart.h"
+#include "dialogstop.h"
+#include "dialogeject.h"
+#include "misc.h"
+#include "ProcessWorker.h"
 #include <QStringListModel>
 
 namespace Ui {
@@ -22,8 +22,11 @@ public:
     ~MainWindow();
 
 
+
+
 signals:
     void on_processStateChange();
+    void deviceListReady();
 
 private slots:
     void on_pushButton_Start_clicked();
@@ -36,16 +39,20 @@ private slots:
 
     void on_processStateChange(const int state, const QString &sourceDevice);
 
+
 private:
     Ui::MainWindow *ui;
 
     Misc *deviceInfoList;
 
     QStringListModel *deviceInfoListModel;
+    QStringListModel *deviceInfoListModelStateUpdated;
 
     DialogStart *dialog_StartJob;
     DialogStop *dialog_StopJob;
     DialogEject *dialog_eject;
+    QStringList deviceReadyOnly;
+
 
 
 };
