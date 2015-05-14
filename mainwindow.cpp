@@ -5,6 +5,7 @@
 #include <QLayout>
 #include <QFileDialog>
 #include <QComboBox>
+#include <QDebug>
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -50,10 +51,10 @@ void MainWindow::on_pushButtonEject_clicked()
 void MainWindow::on_pushButtonRefresh_clicked()
 {
 
-    deviceInfoListModel = new QStringListModel(deviceInfoList->get_ROdevicesInfo());
-    ui->listView_Status->setModel(deviceInfoListModel);
+    deviceInfoListModel = new QStringListModel(deviceInfoList->getDevicesCurrentState());
+    // ui->listView_Status->setModel(deviceInfoListModel);
 
-
+    ui->listView_Status->setModel(deviceInfoList->getDevicesCurrentState());
 
 }
 
@@ -70,13 +71,15 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
             switch (state) {
             case 0:
                 strState = "Ready";
-                deviceReadyOnly << sourceDevice;
+                deviceReady << sourceDevice;
                 break;
             case 1:
                 strState = "Starting";
+                deviceNotReady << sourceDevice;
                 break;
             case 2:
                 strState = "Running";
+                deviceNotReady << sourceDevice;
                 break;
             }
 
@@ -90,6 +93,11 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
 
 
     ui->listView_Status->setModel(deviceInfoListModel);
+
+
+    deviceInfoListStateUpdated.setDevicesReady(deviceReady);
+    deviceInfoListStateUpdated.setDevicesNotReady(deviceNotReady);
+
 //    devListUpdated = deviceInfoListModel;
 //    devListUpdated(deviceInfoListModelStateUpdated);
     // emit deviceInfoListModel;

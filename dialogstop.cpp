@@ -8,8 +8,9 @@ DialogStop::DialogStop(QWidget *parent) :
     ui->setupUi(this);
 
     deviceListPathOnly = new Misc();
-    deviceListPathOnlyModel = new QStringListModel(deviceListPathOnly->get_ROdevicesPath());
+    deviceListPathOnlyModel = new QStringListModel(deviceListPathOnly->getDevicesNotReady());
     ui->comboBoxStop->setModel(deviceListPathOnlyModel);
+    ui->label_allReady->setVisible(false);
 
 }
 
@@ -21,7 +22,12 @@ DialogStop::~DialogStop()
 void DialogStop::on_buttonBoxStop_accepted()
 {
 
-    dialog_StopConfirm = new DialogStopConfirm(this);
-    dialog_StopConfirm->setWindowTitle("WARNING");
-    dialog_StopConfirm->show();
+    if (ui->comboBoxStop->currentText() != "") {
+        dialog_StopConfirm = new DialogStopConfirm(this);
+        dialog_StopConfirm->setWindowTitle("WARNING");
+        dialog_StopConfirm->show();
+    } else {
+        ui->label_allReady->setStyleSheet("QLabel { color : red; }");
+        ui->label_allReady->setVisible(true);
+    }
 }

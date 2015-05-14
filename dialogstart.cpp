@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QString>
 #include <QFileDialog>
+#include <QSysInfo>
 
 DialogStart::DialogStart(QWidget *parent) :
     QDialog(parent),
@@ -11,11 +12,12 @@ DialogStart::DialogStart(QWidget *parent) :
 {
     ui->setupUi(this);
 
+
     // connect(dialog_StartJob,SIGNAL(processStateReady(int,QString)),this,SLOT(on_processStateChange(int,QString)))
 
-
-
-   // ui->comboBoxStart->setModel(deviceListPathOnlyModel);
+    Misc getDevices;
+    deviceListReadyModel = new QStringListModel(getDevices.getDevicesReady());
+    ui->comboBoxStart->setModel(deviceListReadyModel);
     ui->label_filename->setVisible(false);
 }
 
@@ -26,7 +28,7 @@ DialogStart::~DialogStart()
 
 void DialogStart::on_processReadyToRead(const QString &output)
 {
- qDebug() << output;
+ emit processReadyToReadOutput(output);
 }
 
 void DialogStart::on_pushButton_clicked()
@@ -47,24 +49,53 @@ void DialogStart::on_processStatusReady(const int state, const QString &sourceDe
 
 void DialogStart::on_buttonBox_accepted()
 {
-    QString deviceSelected = ui->comboBoxStart->currentText();
+    QString deviceSelected;
+    QSysInfo wichOS;
     QString filenameSelected = ui->lineEditStart->text();
 
+    if(wichOS.kernelType() == "darwin"){
+        Misc volumeInfo;
+        QString volumeSelected;
+        volumeSelected = volumeInfo.get_OSXvolumes(ui->comboBoxStart->currentText());
 
-    if (filenameSelected != "") {
+        deviceSelected = ui->comboBoxStart->currentText();
 
-        ProcessWorker *process = new ProcessWorker(this);
+        if (filenameSelected != "") {
 
-        connect(process,SIGNAL(processOutput(QString)),this,SLOT(on_processReadyToRead(QString)));
-        connect(process,SIGNAL(stateReady(int,QString)),this,SLOT(on_processStatusReady(int,QString)));
+            ProcessWorker *process = new ProcessWorker(this);
 
-        process->process(deviceSelected,filenameSelected);
-        this->close();
+            connect(process,SIGNAL(processOutput(QString)),this,SLOT(on_processReadyToRead(QString)));
+            connect(process,SIGNAL(stateReady(int,QString)),this,SLOT(on_processStatusReady(int,QString)));
 
-    } else {
-        ui->label_filename->setStyleSheet("QLabel { color : red; }");
-        ui->label_filename->setVisible(true);
+            process->process(deviceSelected,filenameSelected,volumeSelected);
+            this->close();
+
+        } else {
+            ui->label_filename->setStyleSheet("QLabel { color : red; }");
+            ui->label_filename->setVisible(true);
+        }
+
+    }else{
+        deviceSelected = ui->comboBoxStart->currentText();
+
+        if (filenameSelected != "") {
+
+            ProcessWorker *process = new ProcessWorker(this);
+
+            connect(process,SIGNAL(processOutput(QString)),this,SLOT(on_processReadyToRead(QString)));
+            connect(process,SIGNAL(stateReady(int,QString)),this,SLOT(on_processStatusReady(int,QString)));
+
+            process->process(deviceSelected,filenameSelected);
+            this->close();
+
+        } else {
+            ui->label_filename->setStyleSheet("QLabel { color : red; }");
+            ui->label_filename->setVisible(true);
+        }
+
     }
+
+
 
 
 

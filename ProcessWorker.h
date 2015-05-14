@@ -13,7 +13,7 @@ public:
     QString ProcessState();
 
 private:
-    QString sourceDevice, destinationDevice;
+    QString sourceDevice, destinationDevice, volumeDevice;
     QTimer *timer;
 
 signals:
@@ -22,6 +22,7 @@ signals:
 
 public slots:
     void process(const QString &parentDevice, const QString &parentDestination);
+    void process(const QString &parentDevice, const QString &parentDestination, const QString &parentVolume);
     void processEject(const QString &parentDevice);
 
 private slots:

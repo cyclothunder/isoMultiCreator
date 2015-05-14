@@ -1,6 +1,7 @@
 #include "ProcessWorker.h"
 #include <QDateTime>
 #include <QDebug>
+#include <QSysInfo>
 
 
 QString device;
@@ -22,12 +23,53 @@ void ProcessWorker::process(const QString &parentDevice, const QString &parentDe
     destinationDevice = parentDestination;
 
     QStringList args;
-    args << "if=" + sourceDevice << "of=" + destinationDevice << "bs=1";
+    QSysInfo wichOS;
 
-    //dd if=/dev/sr2 of=/tmp/test.iso bs=1
+    if(wichOS.kernelType() == "darwin"){
+        args << "makehybrid -iso -joliet -o " + destinationDevice << "/Volumes/"+sourceDevice;
+        qDebug() << "Starting Process for " + parentDevice;
 
-    qDebug() << "Starting Process for " + parentDevice;
-    this->start("/bin/dd",args);
+        this->start("/usr/bin/hdiutil",args);
+
+    }else{
+        args << "if=" + sourceDevice << "of=" + destinationDevice << "bs=1";
+        //dd if=/dev/sr2 of=/tmp/test.iso bs=1
+        qDebug() << "Starting Process for " + parentDevice;
+        this->start("/bin/dd",args);
+    }
+
+
+    this->waitForStarted();
+
+
+
+}
+
+void ProcessWorker::process(const QString &parentDevice, const QString &parentDestination, const QString &parentVolume)
+{
+
+
+    sourceDevice = parentDevice;
+    volumeDevice = parentVolume;
+    destinationDevice = parentDestination;
+
+    QStringList args;
+    QSysInfo wichOS;
+
+    if(wichOS.kernelType() == "darwin"){
+        args << "makehybrid -iso -joliet -o " + destinationDevice << "/Volumes/"+volumeDevice;
+        qDebug() << "Starting Process for " + parentDevice;
+
+        this->start("/usr/bin/hdiutil",args);
+
+    }else{
+        args << "if=" + sourceDevice << "of=" + destinationDevice << "bs=1";
+        //dd if=/dev/sr2 of=/tmp/test.iso bs=1
+        qDebug() << "Starting Process for " + parentDevice;
+        this->start("/bin/dd",args);
+    }
+
+
     this->waitForStarted();
 
 

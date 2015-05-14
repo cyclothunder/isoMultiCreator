@@ -23,7 +23,7 @@ DialogEject::DialogEject(QWidget *parent) :
 
     deviceInfoList = new Misc();
 
-    deviceInfoListModel = new QStringListModel(deviceInfoList->get_ROdevicesInfo());
+    deviceInfoListModel = new QStringListModel(deviceInfoList->getDevicesReady());
 
     ui->comboBoxEject->setModel(deviceInfoListModel);
 

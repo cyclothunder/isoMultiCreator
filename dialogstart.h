@@ -4,7 +4,6 @@
 #include <QDialog>
 #include <misc.h>
 #include <QStringListModel>
-#include <commands.h>
 
 namespace Ui {
 class DialogStart;
@@ -34,12 +33,12 @@ private:
     Ui::DialogStart *ui;
 
     Misc *deviceListPathOnly;
-    QStringListModel *deviceListPathOnlyModel;
+    QStringListModel *deviceListReadyModel;
 
-    Commands *startNewJob;
 
 signals:
     void processStateReady(int state, QString sourceDevice);
+    void processReadyToReadOutput(const QString &output);
 };
 
 #endif // DIALOGSTART_H

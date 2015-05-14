@@ -44,14 +44,14 @@ private:
     Ui::MainWindow *ui;
 
     Misc *deviceInfoList;
+    Misc deviceInfoListStateUpdated;
 
     QStringListModel *deviceInfoListModel;
-    QStringListModel *deviceInfoListModelStateUpdated;
 
     DialogStart *dialog_StartJob;
     DialogStop *dialog_StopJob;
     DialogEject *dialog_eject;
-    QStringList deviceReadyOnly;
+    QStringList deviceReady, deviceNotReady;
 
 
 
