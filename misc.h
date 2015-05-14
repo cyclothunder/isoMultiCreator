@@ -13,18 +13,21 @@ public:
     ~Misc();
     QStringList get_ROdevicesInfo();
     QStringList get_ROdevicesPath();
-    QStringList setDevicesReady(QStringList parentList);
-    QStringList setDevicesNotReady(QStringList parentList);
-    QStringListModel *setDevicesCurrentState(QStringListModel &parentListModel);
+    void setDevicesReady(QStringList parentList);
+    void setDevicesNotReady(QStringList parentList);
+    void setDevicesCurrentState(QStringList parentList);
     QStringList getDevicesReady();
     QStringList getDevicesNotReady();
-
+    QStringList devicesCurrentState;
     QStringList devicesReady, devicesNotReady;
     // QStringList deviceListPath;
-    QStringListModel *devicesCurrentState;
 
-    QStringListModel *getDevicesCurrentState();
+
+    QStringList getDevicesCurrentState();
     QString get_OSXvolumes(QString parentDevice);
+
+
+
 };
 
 #endif // MISC_H

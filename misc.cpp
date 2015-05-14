@@ -7,7 +7,7 @@
 
 Misc::Misc()
 {
-
+devicesCurrentState = get_ROdevicesInfo();
 }
 
 Misc::~Misc()
@@ -81,28 +81,61 @@ QStringList Misc::get_ROdevicesPath()
 
 }
 
-QStringListModel *Misc::setDevicesCurrentState(QStringListModel &parentListModel){
-    // devicesCurrentState = &parentListModel;
-    return &parentListModel;
+void Misc::setDevicesCurrentState(QStringList parentList){
+    devicesCurrentState = parentList;
 }
 
 
-QStringList Misc::setDevicesReady(QStringList parentList){
+void Misc::setDevicesReady(QStringList parentList){
     devicesReady = parentList;
-    return devicesReady;
+
 }
 
-QStringList Misc::setDevicesNotReady(QStringList parentList){
+void Misc::setDevicesNotReady(QStringList parentList){
     devicesNotReady = parentList;
-    return devicesNotReady;
+
 }
 
-QStringListModel *Misc::getDevicesCurrentState(){
+QStringList Misc::getDevicesCurrentState(){
     // devicesCurrentState = new QStringListModel();
 
-    if (devicesCurrentState->rowCount() == 0){
+    if (devicesCurrentState.isEmpty()){
         // QStringList tempDeviceList;
-        devicesCurrentState->setStringList(get_ROdevicesInfo());
+        devicesCurrentState = get_ROdevicesInfo();
+    }
+    else{
+
+        QStringList temp = get_ROdevicesInfo();
+        int deviceCount;
+
+        if (temp.size() > devicesCurrentState.size()) {
+            deviceCount = temp.size();
+            for (int var = 0; var < deviceCount; var++) {
+                if (var < devicesCurrentState.size()) {
+
+                    if (devicesCurrentState.at(var).startsWith("State")) {
+                        temp.replace(var,devicesCurrentState.at(var));
+                    }
+                }
+
+            }
+
+            devicesCurrentState = temp;
+
+        }else{
+            deviceCount = devicesCurrentState.size();
+            for (int var = 0; var < deviceCount; var++) {
+                if (var < temp.size()) {
+
+                    if (temp.at(var).startsWith("State:")) {
+                        devicesCurrentState.replace(var,temp.at(var));
+                    }
+                }
+            }
+            devicesCurrentState = temp;
+        }
+
+
     }
     return devicesCurrentState;
 }

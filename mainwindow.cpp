@@ -51,10 +51,13 @@ void MainWindow::on_pushButtonEject_clicked()
 void MainWindow::on_pushButtonRefresh_clicked()
 {
 
-    deviceInfoListModel = new QStringListModel(deviceInfoList->getDevicesCurrentState());
+    // deviceInfoListModel = new QStringListModel(deviceInfoList->getDevicesCurrentState());
     // ui->listView_Status->setModel(deviceInfoListModel);
 
-    ui->listView_Status->setModel(deviceInfoList->getDevicesCurrentState());
+    QStringListModel *getCurrentDeviceStateListModel;
+    getCurrentDeviceStateListModel = new QStringListModel(deviceInfoList->getDevicesCurrentState());
+
+    ui->listView_Status->setModel(getCurrentDeviceStateListModel);
 
 }
 
@@ -93,10 +96,17 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
 
 
     ui->listView_Status->setModel(deviceInfoListModel);
+    // QStringList deviceCurrentList = deviceInfoListModel->data.toStringList();
+    int myRowCount = deviceInfoListModel->rowCount();
+    QStringList temp2;
 
+    for (int i = 0; i < deviceInfoListModel->rowCount();i++) {
+        temp2 << deviceInfoListModel->index(i).data().toString();
+    }
 
-    deviceInfoListStateUpdated.setDevicesReady(deviceReady);
-    deviceInfoListStateUpdated.setDevicesNotReady(deviceNotReady);
+    deviceInfoList->setDevicesCurrentState(temp2);
+    deviceInfoList->setDevicesReady(deviceReady);
+    deviceInfoList->setDevicesNotReady(deviceNotReady);
 
 //    devListUpdated = deviceInfoListModel;
 //    devListUpdated(deviceInfoListModelStateUpdated);
