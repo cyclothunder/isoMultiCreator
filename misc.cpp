@@ -96,6 +96,8 @@ QStringList Misc::setDevicesNotReady(QStringList parentList){
 }
 
 QStringListModel *Misc::getDevicesCurrentState(){
+    devicesCurrentState = new QStringListModel();
+
     if (devicesCurrentState->rowCount() == 0){
         // QStringList tempDeviceList;
         devicesCurrentState->setStringList(get_ROdevicesInfo());

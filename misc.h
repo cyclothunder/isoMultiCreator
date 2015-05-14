@@ -21,7 +21,7 @@ public:
 
     QStringList devicesReady, devicesNotReady;
     // QStringList deviceListPath;
-    QStringListModel *devicesCurrentState = new QStringListModel();
+    QStringListModel *devicesCurrentState;
 
     QStringListModel *getDevicesCurrentState();
     QString get_OSXvolumes(QString parentDevice);
