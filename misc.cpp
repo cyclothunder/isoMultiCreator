@@ -50,7 +50,7 @@ QStringList Misc::get_ROdevicesInfo()
                item.append("Device: " + deviceList.device() + "\n");
                // deviceListPath << deviceList.device();
                itemDisplayNameFix = deviceList.displayName();
-               itemDisplayNameFix.replace("\x20", " ");
+               itemDisplayNameFix.replace("\\x20", " ");
                item.append("Label: " + itemDisplayNameFix + "\n");
                item.append("Size: " + QString::number(deviceList.bytesTotal()/1024/1024) + " MB" + "\n"); // Convert to MB
                item.append("State: Ready\n");
