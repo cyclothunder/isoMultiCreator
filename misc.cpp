@@ -132,7 +132,7 @@ QStringList Misc::getDevicesCurrentState(){
                     }
                 }
             }
-            devicesCurrentState = temp;
+            // devicesCurrentState = temp;
         }
 
 
