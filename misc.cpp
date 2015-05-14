@@ -46,10 +46,12 @@ QStringList Misc::get_ROdevicesInfo()
     foreach (const QStorageInfo &deviceList, QStorageInfo::mountedVolumes()){
         if (deviceList.isValid() /*&& deviceList.isReady()*/) {
             if (deviceList.isReadOnly()) {
-               QString item;
+               QString item, itemDisplayNameFix;
                item.append("Device: " + deviceList.device() + "\n");
                // deviceListPath << deviceList.device();
-               item.append("Label: " + deviceList.displayName() + "\n");
+               itemDisplayNameFix = deviceList.displayName();
+               itemDisplayNameFix.replace("\x20", " ");
+               item.append("Label: " + itemDisplayNameFix + "\n");
                item.append("Size: " + QString::number(deviceList.bytesTotal()/1024/1024) + " MB" + "\n"); // Convert to MB
                item.append("State: Ready\n");
                 deviceInfo << item;
