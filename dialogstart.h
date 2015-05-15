@@ -17,6 +17,10 @@ public:
     explicit DialogStart(QWidget *parent = 0);
     ~DialogStart();
 
+    void setDevicesReady(QStringList parentList);
+    QStringList getDevicesReady();
+
+    QStringList startDevicesReady;
 private slots:
 
     void on_processReadyToRead(const QString &output);

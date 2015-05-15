@@ -15,8 +15,9 @@ DialogStart::DialogStart(QWidget *parent) :
 
     // connect(dialog_StartJob,SIGNAL(processStateReady(int,QString)),this,SLOT(on_processStateChange(int,QString)))
 
-    Misc getDevices;
-    deviceListReadyModel = new QStringListModel(getDevices.getDevicesReady());
+    // Misc getDevices;
+    deviceListReadyModel = new QStringListModel(startDevicesReady);
+
     ui->comboBoxStart->setModel(deviceListReadyModel);
     ui->label_filename->setVisible(false);
 }
@@ -105,4 +106,18 @@ void DialogStart::on_buttonBox_accepted()
 void DialogStart::on_buttonBox_rejected()
 {
     this->close();
+}
+
+void DialogStart::setDevicesReady(QStringList parentList){
+     startDevicesReady = parentList;
+
+}
+
+QStringList DialogStart::getDevicesReady(){
+//    if (startDevicesReady.isEmpty()) {
+//        deviceListPathOnly = new Misc;
+//        startDevicesReady = deviceListPathOnly->getDevicesReady();
+//    }
+
+    return startDevicesReady;
 }

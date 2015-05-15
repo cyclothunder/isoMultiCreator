@@ -8,6 +8,7 @@
 Misc::Misc()
 {
 devicesCurrentState = get_ROdevicesInfo();
+devicesReady = QStringList();
 }
 
 Misc::~Misc()
@@ -48,7 +49,7 @@ QStringList Misc::get_ROdevicesInfo()
             if (deviceList.isReadOnly()) {
                QString item, itemDisplayNameFix;
                item.append("Device: " + deviceList.device() + "\n");
-               // deviceListPath << deviceList.device();
+               deviceName << deviceList.device();
                itemDisplayNameFix = deviceList.displayName();
                itemDisplayNameFix.replace("\\x20", " ");
                item.append("Label: " + itemDisplayNameFix + "\n");
@@ -97,46 +98,61 @@ void Misc::setDevicesNotReady(QStringList parentList){
 }
 
 QStringList Misc::getDevicesCurrentState(){
-    // devicesCurrentState = new QStringListModel();
+    
+    QStringList temp = get_ROdevicesInfo();
 
-    if (devicesCurrentState.isEmpty()){
-        // QStringList tempDeviceList;
-        devicesCurrentState = get_ROdevicesInfo();
-    }
-    else{
+    int devicesAllReady = 0;
+    if (temp.size() >= devicesCurrentState.size()) {
+        int deviceHit = 0;
+        for (int x = 0; x < devicesCurrentState.size(); x++) {
 
-        QStringList temp = get_ROdevicesInfo();
-        int deviceCount;
+            if (devicesCurrentState.at(x).contains("Ready") == false) {
 
-        if (temp.size() > devicesCurrentState.size()) {
-            deviceCount = temp.size();
-            for (int var = 0; var < deviceCount; var++) {
-                if (var < devicesCurrentState.size()) {
+                deviceName = devicesCurrentState.at(x).split("\n");
 
-                    if (devicesCurrentState.at(var).startsWith("State")) {
-                        temp.replace(var,devicesCurrentState.at(var));
+                for(int i = 0; i < temp.size(); i++){
+
+                    if (temp.at(i).contains(deviceName.at(0)) == true) {
+
+                        deviceHit += 1;
+                        devicesAllReady += 0;
+                        temp.replace(i, devicesCurrentState.at(x) );
+
                     }
                 }
 
+                
             }
 
-            devicesCurrentState = temp;
-
-        }else{
-            deviceCount = devicesCurrentState.size();
-            for (int var = 0; var < deviceCount; var++) {
-                if (var < temp.size()) {
-
-                    if (temp.at(var).startsWith("State:")) {
-                        devicesCurrentState.replace(var,temp.at(var));
-                    }
-                }
-            }
-            // devicesCurrentState = temp;
         }
 
+        devicesCurrentState = temp;
+        
+    } else {
+        if ((temp.size() < devicesCurrentState.size()) && (temp.size() > 0)) {
+            for (int x = 0; x < devicesCurrentState.size(); ++x){
+               int deviceHit = 0;
+               deviceName = devicesCurrentState.at(x).split("\n");
+               for(int i = 0; i < temp.size(); i++){
+                   if(temp.at(i).contains(deviceName.at(0)) == true){
+                        if (devicesCurrentState.at(x).contains("Ready") == false) temp.replace(i, devicesCurrentState.at(x) );
+                       deviceHit += 1;
+                       // break;
+                   }
+                   else {
+                       deviceHit += 0;
+                   }
+               }
 
+               if(deviceHit == 0){
+                devicesCurrentState.removeAt(x);
+                x -= 1;
+               }
+            }
+        }
+        else devicesCurrentState = get_ROdevicesInfo();
     }
+
     return devicesCurrentState;
 }
 

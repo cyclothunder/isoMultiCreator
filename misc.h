@@ -18,7 +18,7 @@ public:
     void setDevicesCurrentState(QStringList parentList);
     QStringList getDevicesReady();
     QStringList getDevicesNotReady();
-    QStringList devicesCurrentState;
+    QStringList devicesCurrentState, deviceName;
     QStringList devicesReady, devicesNotReady;
     // QStringList deviceListPath;
 

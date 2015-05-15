@@ -52,6 +52,8 @@ private:
     DialogStop *dialog_StopJob;
     DialogEject *dialog_eject;
     QStringList deviceReady, deviceNotReady, deviceStateUpdated;
+    QStringList deviceReadyAfterOpened;
+    QStringList deviceNotReadyAfterOpened;
 
 
 

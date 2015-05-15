@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+
     deviceInfoList = new Misc();
     deviceInfoListModel = new QStringListModel(deviceInfoList->get_ROdevicesInfo());
     ui->listView_Status->setModel(deviceInfoListModel);
@@ -28,9 +29,17 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_Start_clicked()
 {
     dialog_StartJob = new DialogStart(this);
+    if (deviceReadyAfterOpened.isEmpty()) {
+        deviceReadyAfterOpened = deviceInfoList->get_ROdevicesPath();
+    }
+
+    dialog_StartJob->setDevicesReady(deviceNotReadyAfterOpened);
+
+
     connect(dialog_StartJob,SIGNAL(processStateReady(int,QString)),this,SLOT(on_processStateChange(int,QString)));
     // connect(dialog_eject,SIGNAL(processStateReady(int,QString)),this,SLOT(on_processStateChange(int,QString)));
     dialog_StartJob->setWindowTitle("Start Job");
+
     dialog_StartJob->show();
 }
 
@@ -66,7 +75,7 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
 
 
     qDebug() << "State of device" << sourceDevice << "is" << state;
-    deviceInfoListModel = new QStringListModel(deviceInfoList->get_ROdevicesInfo());
+    deviceInfoListModel = new QStringListModel(deviceInfoList->getDevicesCurrentState());
     for (int i = 0; i < deviceInfoListModel->rowCount();i++) {
         QStringList temp = deviceInfoListModel->index(i).data().toString().split("\n");
         QString strState = "Unknown";
@@ -104,6 +113,8 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
         temp2 << deviceInfoListModel->index(i).data().toString();
     }
 
+    deviceReadyAfterOpened = deviceReady;
+    deviceNotReadyAfterOpened = deviceNotReady;
     deviceInfoList->setDevicesCurrentState(temp2);
     deviceInfoList->setDevicesReady(deviceReady);
     deviceInfoList->setDevicesNotReady(deviceNotReady);
