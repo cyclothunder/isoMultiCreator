@@ -6,11 +6,14 @@
 #include <QFileDialog>
 #include <QSysInfo>
 
-DialogStart::DialogStart(QWidget *parent) :
+DialogStart::DialogStart(const QStringList devList, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogStart)
 {
     ui->setupUi(this);
+    QStringListModel *newList = new QStringListModel(devList);
+
+    ui->comboBoxStart->setModel(newList);
 
 
     // connect(dialog_StartJob,SIGNAL(processStateReady(int,QString)),this,SLOT(on_processStateChange(int,QString)))

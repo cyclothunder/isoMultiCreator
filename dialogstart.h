@@ -14,7 +14,7 @@ class DialogStart : public QDialog
     Q_OBJECT
 
 public:
-    explicit DialogStart(QWidget *parent = 0);
+    explicit DialogStart(const QStringList devList, QWidget *parent = 0);
     ~DialogStart();
 
     void setDevicesReady(const QStringList &parentList);

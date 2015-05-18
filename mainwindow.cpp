@@ -28,12 +28,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_Start_clicked()
 {
-    dialog_StartJob = new DialogStart(this);
+
     if (deviceReadyAfterOpened.isEmpty()) {
         deviceReadyAfterOpened = deviceInfoList->get_ROdevicesPath();
     }
-
-    dialog_StartJob->setDevicesReady(deviceNotReadyAfterOpened);
+    dialog_StartJob = new DialogStart(deviceReadyAfterOpened, this);
+    // dialog_StartJob->setDevicesReady(deviceNotReadyAfterOpened);
 
 
     connect(dialog_StartJob,SIGNAL(processStateReady(int,QString)),this,SLOT(on_processStateChange(int,QString)));
