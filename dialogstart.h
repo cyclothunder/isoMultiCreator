@@ -17,7 +17,7 @@ public:
     explicit DialogStart(QWidget *parent = 0);
     ~DialogStart();
 
-    void setDevicesReady(QStringList parentList);
+    void setDevicesReady(const QStringList &parentList);
     QStringList getDevicesReady();
 
     QStringList startDevicesReady;
