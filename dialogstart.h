@@ -21,6 +21,19 @@ public:
     QStringList getDevicesReady();
 
     QStringList startDevicesReady;
+
+    void set_deviceSelectedGeneral(QString &sourceDevice);
+
+    QString get_deviceSelectedGeneral();
+
+    void set_filenameSelectedGeneral(QString &filename);
+
+    QString get_filenameSelectedGeneral();
+
+    QString filenameSelectedGeneral, deviceSelectedGeneral;
+
+
+
 private slots:
 
     void on_processReadyToRead(const QString &output);

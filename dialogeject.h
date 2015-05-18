@@ -16,14 +16,16 @@ class DialogEject : public QDialog
     Q_OBJECT
 
 public:
-    explicit DialogEject(QWidget *parent = 0);
+    explicit DialogEject(const QStringList devList, QWidget *parent = 0);
     ~DialogEject();
 
 
     // QStringListModel *devListModel;
 
 
+    void on_processStatusReady(const int state, const QString &sourceDevice);
 signals:
+    void processStateReady(int state, QString sourceDevice);
    // void processStateReady(int state, QString sourceDevice);
 
 private slots:

@@ -158,13 +158,49 @@ QStringList Misc::getDevicesCurrentState(){
 
 QStringList Misc::getDevicesReady()
 {
-    if (devicesReady.isEmpty()) {
-        devicesReady = get_ROdevicesPath();
-    }
+
+    QStringList temp;
+//    if (devicesReady.isEmpty()) {
+//        devicesReady = get_ROdevicesPath();
+
+        for (int x = 0; x < devicesCurrentState.size(); x++) {
+
+            if (devicesCurrentState.at(x).contains("Ready") == true) {
+
+                deviceName = devicesCurrentState.at(x).split("\n");
+
+
+                temp.append(deviceName.at(0));
+            }
+
+        }
+    // }
+        temp.replaceInStrings("Device: ", "");
+        devicesReady = temp;
     return devicesReady;
 }
 
 QStringList Misc::getDevicesNotReady()
 {
+
+    QStringList temp;
+//    if (devicesReady.isEmpty()) {
+//        devicesReady = get_ROdevicesPath();
+
+        for (int x = 0; x < devicesCurrentState.size(); x++) {
+
+            if (devicesCurrentState.at(x).contains("Running") == true) {
+
+                deviceName = devicesCurrentState.at(x).split("\n");
+
+
+                temp.append(deviceName.at(0));
+            }
+
+        }
+    // }
+        temp.replaceInStrings("Device: ", "");
+        devicesNotReady = temp;
+
     return devicesNotReady;
 }

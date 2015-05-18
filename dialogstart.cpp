@@ -55,12 +55,18 @@ void DialogStart::on_buttonBox_accepted()
     QSysInfo wichOS;
     QString filenameSelected = ui->lineEditStart->text();
 
+
+
+
     if(wichOS.kernelType() == "darwin"){
         Misc volumeInfo;
         QString volumeSelected;
         volumeSelected = volumeInfo.get_OSXvolumes(ui->comboBoxStart->currentText());
 
         deviceSelected = ui->comboBoxStart->currentText();
+        set_deviceSelectedGeneral(deviceSelected);
+        set_filenameSelectedGeneral(filenameSelected);
+
 
         if (filenameSelected != "") {
 
@@ -79,6 +85,10 @@ void DialogStart::on_buttonBox_accepted()
 
     }else{
         deviceSelected = ui->comboBoxStart->currentText();
+        set_deviceSelectedGeneral(deviceSelected);
+        set_filenameSelectedGeneral(filenameSelected);
+
+
 
         if (filenameSelected != "") {
 
@@ -124,4 +134,25 @@ QStringList DialogStart::getDevicesReady(){
 //    }
 
     return startDevicesReady;
+}
+
+void DialogStart::set_deviceSelectedGeneral(QString &sourceDevice)
+{
+    deviceSelectedGeneral = sourceDevice;
+
+}
+
+void DialogStart::set_filenameSelectedGeneral(QString &filename)
+{
+    filenameSelectedGeneral = filename;
+
+
+}
+
+QString DialogStart::get_deviceSelectedGeneral(){
+    return deviceSelectedGeneral;
+}
+
+QString DialogStart::get_filenameSelectedGeneral(){
+    return filenameSelectedGeneral;
 }

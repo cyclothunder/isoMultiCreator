@@ -29,9 +29,10 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_Start_clicked()
 {
 
-    if (deviceReadyAfterOpened.isEmpty()) {
-        deviceReadyAfterOpened = deviceInfoList->get_ROdevicesPath();
-    }
+    deviceReadyAfterOpened = deviceInfoList->getDevicesReady();
+//    if (deviceReadyAfterOpened.isEmpty()) {
+//        deviceReadyAfterOpened = deviceInfoList->get_ROdevicesPath();
+//    }
     dialog_StartJob = new DialogStart(deviceReadyAfterOpened, this);
     // dialog_StartJob->setDevicesReady(deviceNotReadyAfterOpened);
 
@@ -41,18 +42,29 @@ void MainWindow::on_pushButton_Start_clicked()
     dialog_StartJob->setWindowTitle("Start Job");
 
     dialog_StartJob->show();
+
+    timer = new QTimer(this);
+        connect(timer, SIGNAL(timeout()), this, SLOT(deviceListUpdate()));
+        timer->start(3000);
+       // timer->start(1000);
+
 }
 
 void MainWindow::on_pushButton_Stop_clicked()
 {
-    dialog_StopJob = new DialogStop(this);
+
+    deviceNotReady = deviceInfoList->getDevicesNotReady();
+
+    dialog_StopJob = new DialogStop(deviceNotReady, this);
     dialog_StopJob->setWindowTitle("Stop Job");
     dialog_StopJob->show();
 }
 
 void MainWindow::on_pushButtonEject_clicked()
 {
-    dialog_eject = new DialogEject(this);
+    deviceReadyAfterOpened = deviceInfoList->getDevicesReady();
+    dialog_eject = new DialogEject(deviceReadyAfterOpened, this);
+    connect(dialog_eject,SIGNAL(processStateReady(int,QString)),this,SLOT(on_processStateChange(int,QString)));
     dialog_eject->setWindowTitle("Eject CD");
     dialog_eject->show();
 }
@@ -128,6 +140,31 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
 //    QStringListModel devListUp = parentDevList;
 
 //    return devListUp;    
+
+}
+
+void MainWindow::deviceListUpdate()
+
+{
+
+    QString sourceDevice = dialog_StartJob->get_deviceSelectedGeneral();
+    QFile filenameSelectedStart(dialog_StartJob->get_filenameSelectedGeneral());
+    qint64 fileSize = filenameSelectedStart.size();
+    QString fileSizeString = QString::number(fileSize/1024/1024);
+
+    QStringListModel *deviceInfoListModelProgress = new QStringListModel(deviceInfoList->getDevicesCurrentState());
+    for (int i = 0; i < deviceInfoListModelProgress->rowCount();i++) {
+        QStringList temp = deviceInfoListModelProgress->index(i).data().toString().split("\n");
+
+        if (temp.at(0).contains(sourceDevice)) {
+            temp.replace(3, "Running - " + fileSizeString + " Bytes");
+        }
+
+        deviceInfoListModelProgress->setData(deviceInfoListModelProgress->index(i),temp.join("\n"));
+    }
+
+    timer->stop();
+
 
 }
 

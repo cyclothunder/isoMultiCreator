@@ -20,6 +20,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    QTimer *timer;
 
 
 
@@ -38,6 +39,8 @@ private slots:
     void on_pushButtonRefresh_clicked();
 
     void on_processStateChange(const int state, const QString &sourceDevice);
+
+    void deviceListUpdate();
 
 
 private:

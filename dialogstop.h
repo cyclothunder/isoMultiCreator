@@ -15,7 +15,7 @@ class DialogStop : public QDialog
     Q_OBJECT
 
 public:
-    explicit DialogStop(QWidget *parent = 0);
+    explicit DialogStop(const QStringList devList, QWidget *parent = 0);
     ~DialogStop();
 
 private slots:

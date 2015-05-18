@@ -6,6 +6,7 @@ DialogStopConfirm::DialogStopConfirm(QWidget *parent) :
     ui(new Ui::DialogStopConfirm)
 {
     ui->setupUi(this);
+
 }
 
 DialogStopConfirm::~DialogStopConfirm()

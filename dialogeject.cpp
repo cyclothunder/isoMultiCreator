@@ -8,7 +8,7 @@
 #include <QString>
 
 
-DialogEject::DialogEject(QWidget *parent) :
+DialogEject::DialogEject(const QStringList devList, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogEject)
 {
@@ -21,11 +21,14 @@ DialogEject::DialogEject(QWidget *parent) :
     // connect(dialog_StartJob,SIGNAL(processStateReady(int,QString)),this,SLOT(on_processStateChange(int,QString)));
 
 
-    deviceInfoList = new Misc();
+    QStringListModel *newList = new QStringListModel(devList);
+    ui->comboBoxEject->setModel(newList);
 
-    deviceInfoListModel = new QStringListModel(deviceInfoList->getDevicesReady());
+    if (ui->comboBoxEject->currentText() == "") {
+        ui->label_eject->setStyleSheet("QLabel { color : red; }");
+        ui->label_eject->setVisible(true);
+    }else ui->label_eject->setVisible(false);
 
-    ui->comboBoxEject->setModel(deviceInfoListModel);
 
 }
 
@@ -41,6 +44,8 @@ void DialogEject::on_buttonBox_accepted()
     QString deviceSelected = ui->comboBoxEject->currentText();
 
     // connect(process,SIGNAL(stateReady(int,QString)),this,SLOT(on_processStatusReady(int,QString)));
+
+    connect(process,SIGNAL(stateReady(int,QString)),this,SLOT(on_processStatusReady(int,QString)));
 
     process->processEject(deviceSelected);
 //    deviceInfoList = new Misc();
@@ -79,3 +84,8 @@ void DialogEject::on_buttonBox_accepted()
 //{
 // emit processStateReady(state,sourceDevice);
 //}
+
+void DialogEject::on_processStatusReady(const int state, const QString &sourceDevice)
+{
+ emit processStateReady(state,sourceDevice);
+}
