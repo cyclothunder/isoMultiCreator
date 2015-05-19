@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 #include <QStringListModel>
@@ -38,15 +38,9 @@ void MainWindow::on_pushButton_Start_clicked()
 
 
     connect(dialog_StartJob,SIGNAL(processStateReady(int,QString)),this,SLOT(on_processStateChange(int,QString)));
+    connect(dialog_StartJob,SIGNAL(deviceFilename(QString,QString)),this,SLOT(deviceListUpdate(QString,QString)));
     // connect(dialog_eject,SIGNAL(processStateReady(int,QString)),this,SLOT(on_processStateChange(int,QString)));
     dialog_StartJob->setWindowTitle("Start Job");
-
-    dialog_StartJob->show();
-
-    timer = new QTimer(this);
-        connect(timer, SIGNAL(timeout()), this, SLOT(deviceListUpdate()));
-        timer->start(3000);
-       // timer->start(1000);
 
 }
 
@@ -143,28 +137,33 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
 
 }
 
-void MainWindow::deviceListUpdate()
+void MainWindow::deviceListUpdate(QString parentSource, QString parentDestination)
 
 {
 
-    QString sourceDevice = dialog_StartJob->get_deviceSelectedGeneral();
-    QFile filenameSelectedStart(dialog_StartJob->get_filenameSelectedGeneral());
+    QString source = parentSource;
+    QString destination = parentDestination;
+
+//    QString sourceDevice = dialog_StartJob->get_deviceSelectedGeneral();
+
+    QFile filenameSelectedStart(destination);
     qint64 fileSize = filenameSelectedStart.size();
-    QString fileSizeString = QString::number(fileSize/1024/1024);
+    QString fileSizeString = QString::number(fileSize/1024/1024); // Converting to MB;
 
     QStringListModel *deviceInfoListModelProgress = new QStringListModel(deviceInfoList->getDevicesCurrentState());
     for (int i = 0; i < deviceInfoListModelProgress->rowCount();i++) {
         QStringList temp = deviceInfoListModelProgress->index(i).data().toString().split("\n");
 
-        if (temp.at(0).contains(sourceDevice)) {
+        if (temp.at(0).contains(source)) {
             temp.replace(3, "Running - " + fileSizeString + " Bytes");
         }
 
         deviceInfoListModelProgress->setData(deviceInfoListModelProgress->index(i),temp.join("\n"));
     }
 
-    timer->stop();
+    ui->listView_Status->setModel(deviceInfoListModelProgress);
 
+    if(fileSizeString == fileSizeString) timer->stop();
 
 }
 

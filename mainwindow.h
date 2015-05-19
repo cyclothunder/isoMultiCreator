@@ -40,7 +40,7 @@ private slots:
 
     void on_processStateChange(const int state, const QString &sourceDevice);
 
-    void deviceListUpdate();
+    void deviceListUpdate(QString parentSource, QString parentDestination);
 
 
 private:

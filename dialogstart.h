@@ -34,6 +34,11 @@ public:
 
 
 
+public slots:
+
+    void on_send_SourceDestination(QString source, QString destination);
+    void send_Device_Filename();
+
 private slots:
 
     void on_processReadyToRead(const QString &output);
@@ -41,6 +46,7 @@ private slots:
     void on_pushButton_clicked();
 
     void on_processStatusReady(const int state, const QString &sourceDevice);
+
 
     void on_buttonBox_accepted();
 
@@ -56,6 +62,8 @@ private:
 signals:
     void processStateReady(int state, QString sourceDevice);
     void processReadyToReadOutput(const QString &output);
+    void send_SourceDestination(QString source, QString destination);
+    void deviceFilename(QString thisSourceDevice, QString thisDestinationDevice);
 };
 
 #endif // DIALOGSTART_H

@@ -41,8 +41,6 @@ void ProcessWorker::process(const QString &parentDevice, const QString &parentDe
 
     this->waitForStarted();
 
-
-
 }
 
 void ProcessWorker::process(const QString &parentDevice, const QString &parentDestination, const QString &parentVolume)
@@ -71,8 +69,6 @@ void ProcessWorker::process(const QString &parentDevice, const QString &parentDe
 
 
     this->waitForStarted();
-
-
 
 }
 
@@ -135,4 +131,3 @@ QString ProcessWorker::ProcessState()
 
    return ret;
 }
-

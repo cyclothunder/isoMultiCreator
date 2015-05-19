@@ -12,6 +12,7 @@ public:
     explicit ProcessWorker(QObject *parent = 0);
     QString ProcessState();
 
+
 private:
     QString sourceDevice, destinationDevice, volumeDevice;
     QTimer *timer;
@@ -20,15 +21,18 @@ signals:
     void processOutput(QString output);
     void stateReady(int state, QString thisSourceDevice);
 
+
 public slots:
     void process(const QString &parentDevice, const QString &parentDestination);
     void process(const QString &parentDevice, const QString &parentDestination, const QString &parentVolume);
     void processEject(const QString &parentDevice);
 
+
 private slots:
     void onProcessReadyToRead();
     void onFinished(int exitCode,QProcess::ExitStatus status);
     void onStateChange();
+
 
 };
 

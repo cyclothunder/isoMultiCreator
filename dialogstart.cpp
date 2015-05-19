@@ -14,6 +14,8 @@ DialogStart::DialogStart(const QStringList devList, QWidget *parent) :
     QStringListModel *newList = new QStringListModel(devList);
 
     ui->comboBoxStart->setModel(newList);
+    QTimer *timer = new QTimer(this);
+       connect(timer, SIGNAL(timeout()), this, SLOT(send_Device_Filename()));
 
 
     // connect(dialog_StartJob,SIGNAL(processStateReady(int,QString)),this,SLOT(on_processStateChange(int,QString)))
@@ -48,6 +50,11 @@ void DialogStart::on_processStatusReady(const int state, const QString &sourceDe
  emit processStateReady(state,sourceDevice);
 }
 
+void DialogStart::on_send_SourceDestination(QString source, QString destination)
+{
+    emit send_SourceDestination(source, destination);
+}
+
 
 void DialogStart::on_buttonBox_accepted()
 {
@@ -76,6 +83,7 @@ void DialogStart::on_buttonBox_accepted()
             connect(process,SIGNAL(stateReady(int,QString)),this,SLOT(on_processStatusReady(int,QString)));
 
             process->process(deviceSelected,filenameSelected,volumeSelected);
+
             this->close();
 
         } else {
@@ -98,7 +106,9 @@ void DialogStart::on_buttonBox_accepted()
             connect(process,SIGNAL(stateReady(int,QString)),this,SLOT(on_processStatusReady(int,QString)));
 
             process->process(deviceSelected,filenameSelected);
+
             this->close();
+
 
         } else {
             ui->label_filename->setStyleSheet("QLabel { color : red; }");
@@ -155,4 +165,17 @@ QString DialogStart::get_deviceSelectedGeneral(){
 
 QString DialogStart::get_filenameSelectedGeneral(){
     return filenameSelectedGeneral;
+}
+
+void DialogStart::send_Device_Filename(){
+
+    QSysInfo wichOS;
+
+    if(wichOS.kernelType() == "darwin"){
+        Misc volumeInfo;
+        QString volumeSelected;
+        volumeSelected = volumeInfo.get_OSXvolumes(ui->comboBoxStart->currentText());
+        emit deviceFilename(ui->comboBoxStart->currentText(), volumeSelected);
+    }
+    else emit deviceFilename(ui->comboBoxStart->currentText(), ui->lineEditStart->text());
 }
