@@ -35,14 +35,17 @@ private slots:
 
    // void on_processStateChange(const int state, const QString &sourceDevice);
 
+    void on_comboBoxEject_currentTextChanged(const QString &arg1);
+
 private:
     Ui::DialogEject *ui;
 
     Misc *deviceInfoList;
     Misc *deviceListPathOnly;
     QStringListModel *deviceInfoListModel;
-
     QStringListModel *deviceListPathOnlyModel;
+
+    QStringList devReadyVolumes;
 
     DialogStopConfirm *dialog_StopConfirm;
 };

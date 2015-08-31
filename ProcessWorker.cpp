@@ -13,6 +13,8 @@ ProcessWorker::ProcessWorker(QObject *parent):
     connect(this,SIGNAL(finished(int,QProcess::ExitStatus)),this,SLOT(onFinished(int,QProcess::ExitStatus)));
     connect(this,SIGNAL(stateChanged(QProcess::ProcessState)),this,SLOT(onStateChange()));
 
+   processPid = 0;
+
 }
 
 void ProcessWorker::process(const QString &parentDevice, const QString &parentDestination)
@@ -30,12 +32,14 @@ void ProcessWorker::process(const QString &parentDevice, const QString &parentDe
         qDebug() << "Starting Process for " + parentDevice;
 
         this->start("/usr/bin/hdiutil",args);
+        processPid = this->processId();
 
     }else{
         args << "if=" + sourceDevice << "of=" + destinationDevice << "bs=1";
         //dd if=/dev/sr2 of=/tmp/test.iso bs=1
         qDebug() << "Starting Process for " + parentDevice;
         this->start("/bin/dd",args);
+        processPid = this->processId();
     }
 
 
@@ -59,12 +63,14 @@ void ProcessWorker::process(const QString &parentDevice, const QString &parentDe
         qDebug() << "Starting Process for " + parentDevice;
 
         this->start("/usr/bin/hdiutil",args);
+        processPid = this->processId();
 
     }else{
         args << "if=" + sourceDevice << "of=" + destinationDevice << "bs=1";
         //dd if=/dev/sr2 of=/tmp/test.iso bs=1
         qDebug() << "Starting Process for " + parentDevice;
         this->start("/bin/dd",args);
+        processPid = this->processId();
     }
 
 
@@ -83,6 +89,19 @@ void ProcessWorker::processEject(const QString &parentDevice)
     this->start("eject",args);
     this->waitForStarted();
 
+}
+
+void ProcessWorker::processKill(const QString &parentDevice, const qint64 &parentPid)
+{
+    sourceDevice = parentDevice;
+
+    QStringList args;
+
+    args << QString::number(parentPid);
+
+    qDebug() << "Killing process " << args << "for device " << sourceDevice;
+    this->start("kill",args);
+    this->waitForStarted();
 
 
 }
@@ -113,21 +132,17 @@ void ProcessWorker::onFinished(int exitCode, QProcess::ExitStatus status)
 
     qDebug() << "Process Finished for " + sourceDevice;
     QProcess::execute("eject",args);
+
+    processPid = 0;
 }
 
 void ProcessWorker::onStateChange()
 {
-    emit stateReady(this->state(),sourceDevice);
+    QSysInfo wichOS;
+
+    if(wichOS.kernelType() == "darwin")
+        emit stateReady(this->state(),sourceDevice, volumeDevice, processPid);
+     else emit stateReady(this->state(),sourceDevice,destinationDevice, processPid);
 
 }
 
-QString ProcessWorker::ProcessState()
-{
-   QString ret;
-
-   if(this->state() == QProcess::NotRunning) ret = "NotRunning";
-   if(this->state() == QProcess::Starting) ret = "Starting";
-   if(this->state() == QProcess::Running) ret = "Running";
-
-   return ret;
-}

@@ -13,6 +13,13 @@ namespace Ui {
 class MainWindow;
 }
 
+struct devices {
+    qint64 pid;
+    int state;
+    QString deviceName;
+
+} ;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -21,8 +28,10 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     QTimer *timer;
-
-
+    QMap<QString, QString> filenameMap;
+    QMap<QString, qint64> devPidList;
+    devices *devicePidListStruct[0];
+    int structSize;
 
 
 signals:
@@ -36,11 +45,11 @@ private slots:
 
     void on_pushButtonEject_clicked();
 
-    void on_pushButtonRefresh_clicked();
+//    void on_pushButtonRefresh_clicked();
 
-    void on_processStateChange(const int state, const QString &sourceDevice);
+    void on_processStateChange(const int state, const QString &sourceDevice, const QString &destination, const qint64 &pid);
 
-    void deviceListUpdate(QString parentSource, QString parentDestination);
+    void deviceListUpdate();
 
 
 private:
@@ -49,7 +58,7 @@ private:
     Misc *deviceInfoList;
     Misc deviceInfoListStateUpdated;
 
-    QStringListModel *deviceInfoListModel;
+    QStringListModel *deviceInfoListModel, *deviceInfoListModel2;
 
     DialogStart *dialog_StartJob;
     DialogStop *dialog_StopJob;
@@ -57,6 +66,11 @@ private:
     QStringList deviceReady, deviceNotReady, deviceStateUpdated;
     QStringList deviceReadyAfterOpened;
     QStringList deviceNotReadyAfterOpened;
+
+    QString onStateChangeToRunning;
+
+    void set_Device_onStateChangeToRunning();
+    QString get_Device_onStateChangeToRunning(QString deviceChangedToRunning);
 
 
 

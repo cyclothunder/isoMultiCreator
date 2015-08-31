@@ -1,11 +1,21 @@
 #include "dialogstop.h"
 #include "ui_dialogstop.h"
 
-DialogStop::DialogStop(const QStringList devList, QWidget *parent) :
+
+DialogStop::DialogStop(const QStringList devList, QMap<QString, qint64> parentMap, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogStop)
 {
     ui->setupUi(this);
+    deviceListPathOnly = new Misc;
+
+    currentDevPidMap = parentMap;
+    QMapIterator<QString, qint64> iter_currentDevPidMap(currentDevPidMap);
+
+    while(iter_currentDevPidMap.hasNext()){
+        iter_currentDevPidMap.next();
+        qDebug() << "device: "<< iter_currentDevPidMap.key() << "pid: "<< iter_currentDevPidMap.value();
+    }
 
     QStringListModel *newList = new QStringListModel(devList);
     ui->comboBoxStop->setModel(newList);
@@ -13,8 +23,26 @@ DialogStop::DialogStop(const QStringList devList, QWidget *parent) :
     if (ui->comboBoxStop->currentText() == "") {
         ui->label_allReady->setStyleSheet("QLabel { color : red; }");
         ui->label_allReady->setVisible(true);
-    }else ui->label_allReady->setVisible(false);
+    }else {
 
+        devReadyVolumes = deviceListPathOnly->getDevicesCurrentState();
+
+        for (int i = 0; i < devReadyVolumes.size();i++) {
+
+            if (devReadyVolumes.at(i).contains(ui->comboBoxStop->currentText())) {
+                QStringList temp1 = devReadyVolumes.at(i).split("\n");
+                QString temp2 = temp1.at(1);
+
+                // temp2.replace("Label: ", "");
+
+                ui->label_allReady->setText(temp2);
+                ui->label_allReady->setVisible(true);
+
+            }
+        }
+
+
+     }
 }
 
 DialogStop::~DialogStop()
@@ -25,8 +53,31 @@ DialogStop::~DialogStop()
 void DialogStop::on_buttonBoxStop_accepted()
 {
 
-        dialog_StopConfirm = new DialogStopConfirm(this);
-        dialog_StopConfirm->setWindowTitle("WARNING");
-        dialog_StopConfirm->show();
+//        dialog_StopConfirm = new DialogStopConfirm(this);
+//        dialog_StopConfirm->setWindowTitle("WARNING");
+//        dialog_StopConfirm->show();
+
+
+        QMessageBox::StandardButton msgBox;
+
+        msgBox = QMessageBox::question(this, "This will terminate current Job and eject CD.", "Are you sure?", QMessageBox::Ok | QMessageBox::Cancel);
+
+//        msgBox.setText("This will terminate current Job and eject CD.");
+//        msgBox.setInformativeText("Are you sure that you want to stop this job?");
+//        msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+
+
+//        msgBox.setDefaultButton(QMessageBox::Cancel);
+
+//        int ret = msgBox.exec();
+
+
+        qint64 temp_pid = currentDevPidMap.value(ui->comboBoxStop->currentText());
+
+        if(msgBox == QMessageBox::Ok){
+            ProcessWorker *processStop = new ProcessWorker(this);
+            processStop->processKill(ui->comboBoxStop->currentText(), temp_pid);
+            this->close();
+        }
 
 }

@@ -32,12 +32,20 @@ public:
 
     QString filenameSelectedGeneral, deviceSelectedGeneral;
 
+    QStringList devReadyVolumes;
 
+    qint64 processIDGeneral;
+
+    void setProcessID(qint64 id);
+
+    QString deviceSelected;
+
+    qint64 getProcessID();
 
 public slots:
 
-    void on_send_SourceDestination(QString source, QString destination);
-    void send_Device_Filename();
+//    void on_send_SourceDestination(QString source, QString destination);
+//    void send_Device_Filename();
 
 private slots:
 
@@ -45,12 +53,16 @@ private slots:
 
     void on_pushButton_clicked();
 
-    void on_processStatusReady(const int state, const QString &sourceDevice);
+    void on_processStatusReady(const int state, const QString &sourceDevice, const QString &destination, const qint64 &pid);
 
 
     void on_buttonBox_accepted();
 
     void on_buttonBox_rejected();
+
+    void on_comboBoxStart_currentTextChanged(const QString &arg1);
+
+    void on_lineEditStart_textChanged(const QString &arg1);
 
 private:
     Ui::DialogStart *ui;
@@ -60,7 +72,7 @@ private:
 
 
 signals:
-    void processStateReady(int state, QString sourceDevice);
+    void processStateReady(int state, QString sourceDevice, QString destination, qint64 pid);
     void processReadyToReadOutput(const QString &output);
     void send_SourceDestination(QString source, QString destination);
     void deviceFilename(QString thisSourceDevice, QString thisDestinationDevice);

@@ -13,3 +13,8 @@ DialogStopConfirm::~DialogStopConfirm()
 {
     delete ui;
 }
+
+void DialogStopConfirm::on_buttonBoxStopConfirm_accepted()
+{
+
+}

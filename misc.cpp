@@ -4,11 +4,14 @@
 #include <QString>
 #include <QStringListModel>
 #include <QStorageInfo>
+#include <QFileInfoList>
 
 Misc::Misc()
 {
 devicesCurrentState = get_ROdevicesInfo();
 devicesReady = QStringList();
+devPidMap["a"] = 10000;
+
 }
 
 Misc::~Misc()
@@ -42,11 +45,17 @@ QStringList Misc::get_ROdevicesInfo()
 {
 
     QStringList deviceInfo;
+    QDir dirs;
+
+    foreach (const QFileInfo drivesList, dirs.drives()){
+        qDebug() << drivesList.absolutePath();
+    }
+
 
 
     foreach (const QStorageInfo &deviceList, QStorageInfo::mountedVolumes()){
-        if (deviceList.isValid() /*&& deviceList.isReady()*/) {
-            if (deviceList.isReadOnly()) {
+           if (deviceList.isValid() /*&& deviceList.isReady()*/) {
+               if (deviceList.isReadOnly()) {
                QString item, itemDisplayNameFix;
                item.append("Device: " + deviceList.device() + "\n");
                deviceName << deviceList.device();
@@ -57,7 +66,7 @@ QStringList Misc::get_ROdevicesInfo()
                item.append("State: Ready\n");
                 deviceInfo << item;
               }
-         }
+          }
      }
 
      return deviceInfo;
@@ -203,4 +212,19 @@ QStringList Misc::getDevicesNotReady()
         devicesNotReady = temp;
 
     return devicesNotReady;
+}
+
+void Misc::setDevPID(QString device, qint64 pid){
+
+    devPidMap[device] = pid;
+}
+
+qint64 Misc::getDevPID(QString devices){
+
+    qint64 currentPID = devPidMap.value(devices);
+    return currentPID;
+}
+
+QMap<QString, qint64> Misc::getMapDevPid(){
+    return devPidMap;
 }

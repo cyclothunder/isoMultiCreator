@@ -14,22 +14,39 @@ DialogEject::DialogEject(const QStringList devList, QWidget *parent) :
 {
     ui->setupUi(this);
 
-    // deviceListPathOnly = new Misc();
+    deviceListPathOnly = new Misc;
+
     // deviceListPathOnlyModel = new QStringListModel(deviceListPathOnly->get_ROdevicesPath());
     // ui->comboBoxEject->setModel(deviceListPathOnlyModel);
 
     // connect(dialog_StartJob,SIGNAL(processStateReady(int,QString)),this,SLOT(on_processStateChange(int,QString)));
 
 
-    QStringListModel *newList = new QStringListModel(devList);
-    ui->comboBoxEject->setModel(newList);
+    QStringList newlist = deviceListPathOnly->getDevicesReady();
 
-    if (ui->comboBoxEject->currentText() == "") {
+    if(newlist.isEmpty()){
         ui->label_eject->setStyleSheet("QLabel { color : red; }");
-        ui->label_eject->setVisible(true);
-    }else ui->label_eject->setVisible(false);
+        ui->label_eject->setText("All devices running");
+    }else{
 
+        QStringListModel *newListModel = new QStringListModel(devList);
+        ui->comboBoxEject->setModel(newListModel);
+        devReadyVolumes = deviceListPathOnly->getDevicesCurrentState();
 
+        for (int i = 0; i < devReadyVolumes.size();i++) {
+
+            if (devReadyVolumes.at(i).contains(ui->comboBoxEject->currentText())) {
+                QStringList temp1 = devReadyVolumes.at(i).split("\n");
+                QString temp2 = temp1.at(1);
+
+                // temp2.replace("Label: ", "");
+
+                ui->label_eject->setText(temp2);
+
+            }
+        }
+
+    }
 }
 
 DialogEject::~DialogEject()
@@ -88,4 +105,17 @@ void DialogEject::on_buttonBox_accepted()
 void DialogEject::on_processStatusReady(const int state, const QString &sourceDevice)
 {
  emit processStateReady(state,sourceDevice);
+}
+
+void DialogEject::on_comboBoxEject_currentTextChanged(const QString &arg1)
+{
+    for (int i = 0; i < devReadyVolumes.size();i++) {
+
+        if (devReadyVolumes.at(i).contains(arg1)) {
+            QStringList temp1 = devReadyVolumes.at(i).split("\n");
+            QString temp2 = temp1.at(1);
+            // temp2.replace("Label: ", "");
+            ui->label_eject->setText(temp2);
+        }
+    }
 }

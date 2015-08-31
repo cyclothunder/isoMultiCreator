@@ -5,6 +5,8 @@
 #include <misc.h>
 #include <dialogstopconfirm.h>
 #include <QStringListModel>
+#include <QMessageBox>
+#include <ProcessWorker.h>
 
 namespace Ui {
 class DialogStop;
@@ -15,8 +17,10 @@ class DialogStop : public QDialog
     Q_OBJECT
 
 public:
-    explicit DialogStop(const QStringList devList, QWidget *parent = 0);
+    explicit DialogStop(const QStringList devList, QMap<QString, qint64> parentMap, QWidget *parent = 0);
     ~DialogStop();
+    QMap<QString, qint64> currentDevPidMap;
+    QStringList devReadyVolumes;
 
 private slots:
     void on_buttonBoxStop_accepted();
