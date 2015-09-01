@@ -21,6 +21,14 @@ MainWindow::MainWindow(QWidget *parent) :
     deviceInfoListModel = new QStringListModel(deviceInfoList->get_ROdevicesInfo());
     ui->listView_Status->setModel(deviceInfoListModel);
 
+
+    for (int var = 0; var < 3; ++var) {
+        QLabel *hddLabelName = new QLabel(this);
+        hddLabelName->setText("texto dinamico: " + QString::number(var));
+        ui->hddLayout->addWidget(hddLabelName);
+
+    }
+
     timer = new QTimer(this);
         connect(timer, SIGNAL(timeout()), this, SLOT(deviceListUpdate()));
         timer->start(5000);
