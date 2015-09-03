@@ -1,16 +1,22 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
-#include <QtCore>
 
+#include <QString>
 
-class Commands : public QThread
+struct hardDisk {
+    QString label;
+    QString device;
+    QString totalBytes;
+    QString freeBytes;
+    QString state;
+};
+
+class Commands
 {
 public:
     Commands();
     ~Commands();
 
-    QString startJob(QString deviceSelected);
-    void run();
 };
 
 #endif // COMMANDS_H

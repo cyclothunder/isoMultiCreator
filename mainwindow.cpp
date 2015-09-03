@@ -6,6 +6,7 @@
 #include <QFileDialog>
 #include <QComboBox>
 #include <QDebug>
+#include <QStorageInfo>
 
 
 
@@ -21,10 +22,34 @@ MainWindow::MainWindow(QWidget *parent) :
     deviceInfoListModel = new QStringListModel(deviceInfoList->get_ROdevicesInfo());
     ui->listView_Status->setModel(deviceInfoListModel);
 
+//    QString hdd_available = deviceInfoList->get_HardDrivesInfo();
+//    QLabel *hddLabelName = new QLabel(this);
+//            hddLabelName->setText(hdd_available);
+//            ui->hddLayout->addWidget(hddLabelName);
 
-    for (int var = 0; var < 3; ++var) {
+    int i = 0;
+    foreach (const QStorageInfo &deviceList, QStorageInfo::mountedVolumes()){
+           if (deviceList.isValid() && deviceList.isReady()) {
+               if (!deviceList.isReadOnly()) {
+                   i++;
+               }
+           }
+    }
+
+        hardDisk* hddList = new hardDisk[i+1];
+        *hddList = deviceInfoList->get_HardDrivesInfo();
+
+    for (int var = 0; var < i; ++var) {
         QLabel *hddLabelName = new QLabel(this);
-        hddLabelName->setText("texto dinamico: " + QString::number(var));
+        hddLabelName->setText("\n" + hddList[var].label + "\n" +
+                              "Device: " + hddList[var].device + "\n" +
+                              "Total: " + hddList[var].totalBytes + " Gb\n" +
+                              "Free: " + hddList[var].freeBytes + " Gb\n" +
+                              hddList[var].state + "\n");
+        //hddLabelName->setText(hddList[var].device);
+//        hddLabelName->setText(hddList.totalBytes);
+//        hddLabelName->setText(hddList.freeBytes);
+//        hddLabelName->setText(hddList.state);
         ui->hddLayout->addWidget(hddLabelName);
 
     }

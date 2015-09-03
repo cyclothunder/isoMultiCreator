@@ -6,6 +6,7 @@
 #include "dialogstop.h"
 #include "dialogeject.h"
 #include "misc.h"
+#include "commands.h"
 #include "ProcessWorker.h"
 #include <QStringListModel>
 

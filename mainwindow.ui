@@ -112,8 +112,13 @@
       <height>16</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <underline>true</underline>
+     </font>
+    </property>
     <property name="text">
-     <string>HDD List:</string>
+     <string>HDD List</string>
     </property>
    </widget>
   </widget>

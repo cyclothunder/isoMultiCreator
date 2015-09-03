@@ -19,6 +19,84 @@ Misc::~Misc()
 
 }
 
+hardDisk Misc::get_HardDrivesInfo()
+{
+
+    QStringList deviceInfo;
+    QDir dirs;
+    QString item;
+
+    foreach (const QFileInfo drivesList, dirs.drives()){
+        qDebug() << drivesList.absolutePath();
+    }
+
+    int i=0;
+
+    foreach (const QStorageInfo &deviceList, QStorageInfo::mountedVolumes()){
+           if (deviceList.isValid() && deviceList.isReady()) {
+               if (!deviceList.isReadOnly()) {
+                   i++;
+               }
+           }
+    }
+
+    hardDisk* hardDiskStruc = new hardDisk[i+1];
+
+    foreach (const QStorageInfo &deviceList, QStorageInfo::mountedVolumes()){
+           if (deviceList.isValid() && deviceList.isReady()) {
+               if (!deviceList.isReadOnly()) {
+
+                   QString itemDisplayNameFix;
+                   // deviceName << deviceList.device();
+                   itemDisplayNameFix = deviceList.displayName();
+                   itemDisplayNameFix.replace("\\x20", " ");
+                   item.append("Label: " + itemDisplayNameFix + "\n");
+                   item.append("Device: " + deviceList.device() + "\n");
+                   qint64 total_diskSize = deviceList.bytesTotal();
+                   qint64 total_diskSize_temp = 0;
+
+                   while (total_diskSize >= 1024) {
+                       total_diskSize_temp = total_diskSize/1024;
+                       total_diskSize = total_diskSize_temp;
+                   }
+
+                   item.append("Total: " + QString::number(total_diskSize) + " Gb" + "\n"); // Convert to Gb
+
+                   qint64 free_diskSize = deviceList.bytesFree();
+                   qint64 free_diskSize_temp = 0;
+
+                   while (free_diskSize >= 1024) {
+                       free_diskSize_temp = free_diskSize/1024;
+                       free_diskSize = free_diskSize_temp;
+                   }
+
+                   item.append("Free: " + QString::number(free_diskSize) + " Gb" + "\n"); // Convert to Gb
+                   item.append("State: Ready\n\n");
+                   deviceInfo << item;
+
+                   hardDiskStruc[i-1].label = itemDisplayNameFix;
+                   hardDiskStruc[i-1].device = deviceList.device();
+                   hardDiskStruc[i-1].totalBytes = QString::number(total_diskSize);
+                   hardDiskStruc[i-1].freeBytes = QString::number(free_diskSize);
+                   hardDiskStruc[i-1].state = "Ready";
+                   ++i;
+             }
+          }
+     }
+
+    for (int var = 0; var < i-1; var++) {
+        qDebug() << "Label -" << hardDiskStruc[var].label;
+        qDebug() << "Device -" << hardDiskStruc[var].device;
+        qDebug() << "Total -" << hardDiskStruc[var].totalBytes << "Gb";
+        qDebug() << "Free -" << hardDiskStruc[var].freeBytes << "Gb";
+        qDebug() << "State -" << hardDiskStruc[var].state;
+        qDebug() << "------ empty line ------";
+
+    }
+
+    return *hardDiskStruc;
+}
+
 
 QString Misc::get_OSXvolumes(QString parentDevice){
 
