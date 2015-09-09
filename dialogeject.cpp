@@ -62,7 +62,7 @@ void DialogEject::on_buttonBox_accepted()
 
     // connect(process,SIGNAL(stateReady(int,QString)),this,SLOT(on_processStatusReady(int,QString)));
 
-    connect(process,SIGNAL(stateReady(int,QString)),this,SLOT(on_processStatusReady(int,QString)));
+    connect(process,SIGNAL(stateReady(int,QString,QString,qint64)),this,SLOT(on_processStatusReady(int,QString)));
 
     process->processEject(deviceSelected);
 //    deviceInfoList = new Misc();

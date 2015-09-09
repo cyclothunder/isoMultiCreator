@@ -1,19 +1,18 @@
 #ifndef MISC_H
 #define MISC_H
 
-#include "commands.h"
 #include <QStringList>
 #include <QString>
 #include <QStringListModel>
 #include <QDebug>
 
-//struct hardDisk {
-//    QString label;
-//    QString device;
-//    QString totalBytes;
-//    QString freeBytes;
-//    QString state;
-//};
+struct hardDisk {
+    QString label;
+    QString device;
+    QString totalBytes;
+    QString freeBytes;
+    QString state;
+};
 
 class Misc
 {
@@ -22,7 +21,9 @@ public:
     ~Misc();
     QStringList get_ROdevicesInfo();
     QStringList get_ROdevicesPath();
-    hardDisk get_HardDrivesInfo();
+    hardDisk *get_HardDrivesInfo();
+    hardDisk* hardDiskStruc ;
+    hardDisk* currentHardDiskList;
     void setDevicesReady(QStringList parentList);
     void setDevicesNotReady(QStringList parentList);
     void setDevicesCurrentState(QStringList parentList);
@@ -31,6 +32,7 @@ public:
     QStringList devicesCurrentState, deviceName;
     QStringList devicesReady, devicesNotReady;
     QMap<QString, qint64> devPidMap;
+    int hddListCounter;
     // hardDisk hardDiskStruc[0];
     // QStringList deviceListPath;
 
@@ -41,6 +43,7 @@ public:
     void setDevPID(QString device, qint64 pid);
     qint64 getDevPID(QString devices);
     QMap<QString, qint64> getMapDevPid();
+    void toggleHddState(QString dev);
 };
 
 #endif // MISC_H

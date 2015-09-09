@@ -81,14 +81,18 @@ void ProcessWorker::process(const QString &parentDevice, const QString &parentDe
 void ProcessWorker::processEject(const QString &parentDevice)
 {
     sourceDevice = parentDevice;
-
+    QSysInfo wichOS;
     QStringList args;
     args << sourceDevice;
-
     qDebug() << "Starting process for ejecting " + parentDevice;
-    this->start("eject",args);
-    this->waitForStarted();
+    if(wichOS.kernelType() == "darwin"){
+            this->start("/usr/bin/drutil eject",args);
 
+    }else{
+            this->start("eject",args);
+        }
+
+    this->waitForStarted();
 }
 
 void ProcessWorker::processKill(const QString &parentDevice, const qint64 &parentPid)

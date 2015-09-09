@@ -23,7 +23,7 @@ public:
     // QStringListModel *devListModel;
 
 
-    void on_processStatusReady(const int state, const QString &sourceDevice);
+
 signals:
     void processStateReady(int state, QString sourceDevice);
    // void processStateReady(int state, QString sourceDevice);
@@ -36,6 +36,7 @@ private slots:
    // void on_processStateChange(const int state, const QString &sourceDevice);
 
     void on_comboBoxEject_currentTextChanged(const QString &arg1);
+    void on_processStatusReady(const int state, const QString &sourceDevice);
 
 private:
     Ui::DialogEject *ui;

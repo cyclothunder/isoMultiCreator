@@ -1,6 +1,5 @@
 ﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
-
 #include <QStringListModel>
 #include <QLayout>
 #include <QFileDialog>
@@ -22,34 +21,38 @@ MainWindow::MainWindow(QWidget *parent) :
     deviceInfoListModel = new QStringListModel(deviceInfoList->get_ROdevicesInfo());
     ui->listView_Status->setModel(deviceInfoListModel);
 
-//    QString hdd_available = deviceInfoList->get_HardDrivesInfo();
-//    QLabel *hddLabelName = new QLabel(this);
-//            hddLabelName->setText(hdd_available);
-//            ui->hddLayout->addWidget(hddLabelName);
-
-    int i = 0;
+    int hddListCount = 0;
     foreach (const QStorageInfo &deviceList, QStorageInfo::mountedVolumes()){
            if (deviceList.isValid() && deviceList.isReady()) {
                if (!deviceList.isReadOnly()) {
-                   i++;
+                   hddListCount++;
                }
            }
     }
 
-        hardDisk* hddList = new hardDisk[i+1];
-        *hddList = deviceInfoList->get_HardDrivesInfo();
+        hardDisk* hddList = new hardDisk[hddListCount];
+        hddList = deviceInfoList->get_HardDrivesInfo();
 
-    for (int var = 0; var < i; ++var) {
+
+        //*hddList = deviceInfoList->get_HardDrivesInfo();
+
+        for (int x = 0; x < hddListCount; x++) {
+            qDebug() << "------ 2nd Part ------";
+            qDebug() << "Label -" << hddList[x].label;
+            qDebug() << "Device -" << hddList[x].device;
+            qDebug() << "Total -" << hddList[x].totalBytes << "Gb";
+            qDebug() << "Free -" << hddList[x].freeBytes << "Gb";
+            qDebug() << "State -" << hddList[x].state;
+            qDebug() << "------ empty line ------";
+
+        }
+
+    for (int var = 0; var < hddListCount; var++) {
         QLabel *hddLabelName = new QLabel(this);
-        hddLabelName->setText("\n" + hddList[var].label + "\n" +
-                              "Device: " + hddList[var].device + "\n" +
-                              "Total: " + hddList[var].totalBytes + " Gb\n" +
+        hddLabelName->setText(hddList[var].label + "\n" +
                               "Free: " + hddList[var].freeBytes + " Gb\n" +
                               hddList[var].state + "\n");
-        //hddLabelName->setText(hddList[var].device);
-//        hddLabelName->setText(hddList.totalBytes);
-//        hddLabelName->setText(hddList.freeBytes);
-//        hddLabelName->setText(hddList.state);
+
         ui->hddLayout->addWidget(hddLabelName);
 
     }
@@ -69,12 +72,6 @@ void MainWindow::on_pushButton_Start_clicked()
 {
 
     deviceReadyAfterOpened = deviceInfoList->getDevicesReady();
-
-    //    if (deviceReadyAfterOpened.isEmpty()) {
-//        deviceReadyAfterOpened = deviceInfoList->get_ROdevicesPath();onedriv
-
-//    }
-    // dialog_StartJob = new DialogStart(deviceReadyAfterOpened, this);
 
     dialog_StartJob = new DialogStart(deviceReadyAfterOpened, this);
 
@@ -190,62 +187,6 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
         onStateChangeToRunning = sourceDevice;
         filenameMap[sourceDevice] = destination;
         devPidList[sourceDevice] = pid;
-
-
-//        int deviceNameHit = 0;
-//        for(int x = 0; x < structSize; x++){
-//            if(devicePidListStruct[x]->deviceName == sourceDevice){
-//                devicePidListStruct[x]->pid = pid;
-//                devicePidListStruct[x]->state = state;
-//                deviceNameHit +=1;
-//                break;
-//            }
-//         }
-
-//        devices* tempStruct = new devices[structSize+1];
-
-//        if(deviceNameHit == 0){
-
-
-
-//            for(int x = 0; x < structSize+1; x++){
-//                // tempStruct[x] = devicePidListStruct[x];
-//            }
-
-//            if(structSize == 0){
-//                tempStruct[structSize].deviceName = sourceDevice;
-//                tempStruct[structSize].pid = pid;
-//                tempStruct[structSize].state = state;
-//            }
-//            else{
-//                tempStruct[structSize-1].deviceName = sourceDevice;
-//                tempStruct[structSize-1].pid = pid;
-//                tempStruct[structSize-1].state = state;
-//            }
-
-//            qDebug() << "Size of temp struct: " << sizeof(tempStruct);
-
-//        }
-
-
-//        devices* devicePidListStruct = new devices[sizeof(tempStruct)];
-//        for(int x = 0; x < structSize+1; x++){
-//            devicePidListStruct[x] = tempStruct[x];
-//            qDebug() << "Device:" << devicePidListStruct[x].deviceName;
-//            qDebug() << "Device:" << devicePidListStruct[x].pid;
-//            qDebug() << "Device:" << devicePidListStruct[x].state;
-//        }
-
-//        qDebug() << "Size Struct Full Array: " << sizeof(devicePidListStruct);
-//        qDebug() << "Size Struct Array[0]: " << sizeof(devicePidListStruct[0]);
-//        qDebug() << "Size Struct Array: " << (sizeof(devicePidListStruct)/sizeof(devicePidListStruct[0]));
-//        qDebug() << "==========";
-
-
-//        structSize += 1;
-
-
-
     }
     else{
         if(state == 0){
@@ -271,22 +212,11 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
          }
      }
 
-//    devListUpdated = deviceInfoListModel;
-//    devListUpdated(deviceInfoListModelStateUpdated);
-    // emit deviceInfoListModel;
-}
-
-//QStringListModel devListUpdated(QStringListModel parentDevList){
-//    QStringListModel devListUp = parentDevList;
-
-//    return devListUp;    
+}   
 
 void MainWindow::deviceListUpdate()
 {
 
-
-    //QString sourceDevice = dialog_StartJob->get_deviceSelectedGeneral();
-    //QFile filenameSelectedStart(filenameMap[]);
     QMap<QString, QString> temp_filenameMap = filenameMap;
     QMapIterator<QString, QString> iter_filenameMap(temp_filenameMap);
     QStringList temp2;
@@ -316,15 +246,9 @@ void MainWindow::deviceListUpdate()
             }
 
             deviceInfoListModel2->setData(deviceInfoListModel2->index(i),temp.join("\n"));
-            // temp2 << deviceInfoListModel2->index(i).data().toString();
+
         }
 
-
-//        if(sourceDevice != "Running"){
-//            timer->stop();
-//            filenameMap[sourceDevice]
-//            ui->listView_Status->setModel(deviceInfoListModel);
-//        }
     }
 
     for (int i = 0; i < deviceInfoListModel2->rowCount();i++) {
@@ -333,9 +257,6 @@ void MainWindow::deviceListUpdate()
 
     ui->listView_Status->setModel(deviceInfoListModel2);
     deviceInfoList->setDevicesCurrentState(temp2);
-
-
-    // QStringListModel *deviceInfoListModelProgress = new QStringListModel(deviceInfoList->getDevicesCurrentState());
 
 
 }

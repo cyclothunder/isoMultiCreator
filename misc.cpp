@@ -11,7 +11,8 @@ Misc::Misc()
 devicesCurrentState = get_ROdevicesInfo();
 devicesReady = QStringList();
 devPidMap["a"] = 10000;
-
+hddListCounter = 0;
+currentHardDiskList = get_HardDrivesInfo();
 }
 
 Misc::~Misc()
@@ -19,7 +20,7 @@ Misc::~Misc()
 
 }
 
-hardDisk Misc::get_HardDrivesInfo()
+hardDisk *Misc::get_HardDrivesInfo()
 {
 
     QStringList deviceInfo;
@@ -39,9 +40,10 @@ hardDisk Misc::get_HardDrivesInfo()
                }
            }
     }
+     hddListCounter = i;
+     hardDisk* hardDiskStruc = new hardDisk[i];
 
-    hardDisk* hardDiskStruc = new hardDisk[i+1];
-
+    i=0;
     foreach (const QStorageInfo &deviceList, QStorageInfo::mountedVolumes()){
            if (deviceList.isValid() && deviceList.isReady()) {
                if (!deviceList.isReadOnly()) {
@@ -74,17 +76,17 @@ hardDisk Misc::get_HardDrivesInfo()
                    item.append("State: Ready\n\n");
                    deviceInfo << item;
 
-                   hardDiskStruc[i-1].label = itemDisplayNameFix;
-                   hardDiskStruc[i-1].device = deviceList.device();
-                   hardDiskStruc[i-1].totalBytes = QString::number(total_diskSize);
-                   hardDiskStruc[i-1].freeBytes = QString::number(free_diskSize);
-                   hardDiskStruc[i-1].state = "Ready";
+                   hardDiskStruc[i].label = itemDisplayNameFix;
+                   hardDiskStruc[i].device = deviceList.device();
+                   hardDiskStruc[i].totalBytes = QString::number(total_diskSize);
+                   hardDiskStruc[i].freeBytes = QString::number(free_diskSize);
+                   hardDiskStruc[i].state = "Ready";
                    ++i;
              }
           }
      }
 
-    for (int var = 0; var < i-1; var++) {
+    for (int var = 0; var < i; var++) {
         qDebug() << "Label -" << hardDiskStruc[var].label;
         qDebug() << "Device -" << hardDiskStruc[var].device;
         qDebug() << "Total -" << hardDiskStruc[var].totalBytes << "Gb";
@@ -94,7 +96,7 @@ hardDisk Misc::get_HardDrivesInfo()
 
     }
 
-    return *hardDiskStruc;
+    return hardDiskStruc;
 }
 
 
@@ -305,4 +307,17 @@ qint64 Misc::getDevPID(QString devices){
 
 QMap<QString, qint64> Misc::getMapDevPid(){
     return devPidMap;
+}
+
+void Misc::toggleHddState(QString dev){
+    for (int var = 0; var < hddListCounter; ++var) {
+        if (currentHardDiskList[var].device.contains(dev) & currentHardDiskList[var].state == "Ready") {
+            currentHardDiskList[var].state = "Busy";
+        } else {
+            if (currentHardDiskList[var].device.contains(dev) & currentHardDiskList[var].state == "Busy") {
+                currentHardDiskList[var].state = "Ready";
+
+            }
+        }
+    }
 }

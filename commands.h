@@ -3,13 +3,13 @@
 
 #include <QString>
 
-struct hardDisk {
-    QString label;
-    QString device;
-    QString totalBytes;
-    QString freeBytes;
-    QString state;
-};
+//struct hardDisk {
+//    QString label;
+//    QString device;
+//    QString totalBytes;
+//    QString freeBytes;
+//    QString state;
+//};
 
 class Commands
 {
