@@ -83,6 +83,7 @@ void DialogStop::on_buttonBoxStop_accepted()
             ProcessWorker *processStop = new ProcessWorker(this);
             processStop->processKill(ui->comboBoxStop->currentText(), temp_pid);
             deviceListPathOnly->setHDDCurrentState("Ready", temp_hddStorage);
+            qDebug() << "Stopping - " << temp_hddStorage << " | State: " << "Ready";
             this->close();
         }
 
