@@ -185,13 +185,13 @@ void Misc::setHDDCurrentState(QString parentHddState, QString parentDestinationS
 
     for(int hddcount = 0; hddcount < hddListCount; hddcount++){
 
-        if(hardDiskStruc[hddcount].label == parentDestinationStorage){
+        if(currentHardDiskList[hddcount].label == parentDestinationStorage){
 //            if(hddList[hddcount].state == "Ready" ) hddList[hddcount].state = "Busy";
 //            else hddList[hddcount].state = "Ready";
-            hardDiskStruc[hddcount].state = parentHddState;
+            currentHardDiskList[hddcount].state = parentHddState;
 
             qDebug() << "-----> destinationstorage: " << parentDestinationStorage;
-            qDebug() << "hdd label: " << hardDiskStruc[hddcount].label;
+            qDebug() << "hdd label: " << currentHardDiskList[hddcount].label;
             qDebug() << "hdd state: " << parentHddState;
         }
         else qDebug() << "hdd not found!";
@@ -199,7 +199,7 @@ void Misc::setHDDCurrentState(QString parentHddState, QString parentDestinationS
 }
 
 hardDisk *Misc::getHDDCurrentState(){
-    return hardDiskStruc;
+    return currentHardDiskList;
 }
 
 void Misc::setDevicesCurrentState(QStringList parentList){

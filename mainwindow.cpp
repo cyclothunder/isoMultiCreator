@@ -276,7 +276,7 @@ void MainWindow::deviceListUpdate()
     deviceInfoList->setDevicesCurrentState(temp2);
 
 
-    hddList = deviceInfoList->get_HardDrivesInfo();
+
     hddListCount = 0;
     foreach (const QStorageInfo &deviceList, QStorageInfo::mountedVolumes()){
            if (deviceList.isValid() && deviceList.isReady()) {
@@ -286,13 +286,16 @@ void MainWindow::deviceListUpdate()
            }
     }
 
+    hddList = new hardDisk[hddListCount];
+    hddList = deviceInfoList->getHDDCurrentState();
+
+
     QLayoutItem *child;
     while( (child = ui->hddLayout->takeAt(0)) != 0) {
         delete child->widget();
         delete child;
     }
 
-    hddList = deviceInfoList->getHDDCurrentState();
     for (int var = 0; var < hddListCount; var++) {
 
         QLabel *hddLabelName = new QLabel(this);
