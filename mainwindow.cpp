@@ -97,6 +97,7 @@ void MainWindow::on_pushButton_Stop_clicked()
 
     deviceNotReady = deviceInfoList->getDevicesNotReady();
     QMap<QString, qint64> currentDevPids = deviceInfoList->getMapDevPid();
+    hddPidList = deviceInfoList->getHddStoragePid();
 
 //    dialog_StopJob = new DialogStop(deviceNotReady, &currentDevPids, this);
     dialog_StopJob = new DialogStop(deviceNotReady, devPidList, hddPidList, this);
