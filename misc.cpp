@@ -340,14 +340,14 @@ QMap<QString, qint64> Misc::getMapDevPid(){
 }
 
 void Misc::toggleHddState(QString dev){
-    for (int var = 0; var < hddListCounter; ++var) {
-        if (currentHardDiskList[var].device.contains(dev) & currentHardDiskList[var].state == "Ready") {
-            currentHardDiskList[var].state = "Busy";
-        } else {
-            if (currentHardDiskList[var].device.contains(dev) & currentHardDiskList[var].state == "Busy") {
-                currentHardDiskList[var].state = "Ready";
+//    for (int var = 0; var < hddListCounter; ++var) {
+//        if (currentHardDiskList[var].device.contains(dev) & currentHardDiskList[var].state == "Ready") {
+//            currentHardDiskList[var].state = "Busy";
+//        } else {
+//            if (currentHardDiskList[var].device.contains(dev) & currentHardDiskList[var].state == "Busy") {
+//                currentHardDiskList[var].state = "Ready";
 
-            }
-        }
-    }
+//            }
+//        }
+//    }
 }
