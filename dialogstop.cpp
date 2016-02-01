@@ -16,7 +16,7 @@ DialogStop::DialogStop(const QStringList devList, QMap<QString, qint64> parentMa
 
     while(iter_currentDevPidMap.hasNext()){
         iter_currentDevPidMap.next();
-        qDebug() << "device: "<< iter_currentDevPidMap.key() << "pid: "<< iter_currentDevPidMap.value();
+        qDebug() << "DIALOG STOP . device: "<< iter_currentDevPidMap.key() << "pid: "<< iter_currentDevPidMap.value();
     }
 
     QStringListModel *newList = new QStringListModel(devList);
