@@ -36,6 +36,8 @@ public:
     // hardDisk hardDiskStruc[0];
     // QStringList deviceListPath;
 
+    hardDisk *getHDDCurrentState();
+    void setHDDCurrentState(QString parentHddState, QString parentDestinationStorage);
 
     QStringList getDevicesCurrentState();
     QString get_OSXvolumes(QString parentDevice);

@@ -172,10 +172,39 @@ QStringList Misc::get_ROdevicesPath()
 
 }
 
+void Misc::setHDDCurrentState(QString parentHddState, QString parentDestinationStorage){
+
+    int hddListCount = 0;
+    foreach (const QStorageInfo &deviceList, QStorageInfo::mountedVolumes()){
+           if (deviceList.isValid() && deviceList.isReady()) {
+               if (!deviceList.isReadOnly()) {
+                   hddListCount++;
+               }
+           }
+    }
+
+    for(int hddcount = 0; hddcount < hddListCount; hddcount++){
+
+        if(hardDiskStruc[hddcount].label == parentDestinationStorage){
+//            if(hddList[hddcount].state == "Ready" ) hddList[hddcount].state = "Busy";
+//            else hddList[hddcount].state = "Ready";
+            hardDiskStruc[hddcount].state = parentHddState;
+
+            qDebug() << "-----> destinationstorage: " << parentDestinationStorage;
+            qDebug() << "hdd label: " << hardDiskStruc[hddcount].label;
+            qDebug() << "hdd state: " << parentHddState;
+        }
+        else qDebug() << "hdd not found!";
+    }
+}
+
+hardDisk *Misc::getHDDCurrentState(){
+    return hardDiskStruc;
+}
+
 void Misc::setDevicesCurrentState(QStringList parentList){
     devicesCurrentState = parentList;
 }
-
 
 void Misc::setDevicesReady(QStringList parentList){
     devicesReady = parentList;

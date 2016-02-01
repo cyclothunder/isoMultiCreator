@@ -220,7 +220,7 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
         if(hddList[hddcount].label == destinationStorage){
 //            if(hddList[hddcount].state == "Ready" ) hddList[hddcount].state = "Busy";
 //            else hddList[hddcount].state = "Ready";
-            hddList[hddcount].state = hddState;
+            deviceInfoList->setHDDCurrentState(hddState, destinationStorage);
 
             qDebug() << "-----> destinationstorage: " << destinationStorage;
             qDebug() << "hdd label: " << hddList[hddcount].label;
@@ -292,6 +292,7 @@ void MainWindow::deviceListUpdate()
         delete child;
     }
 
+    *hddList = deviceInfoList->getHDDCurrentState();
     for (int var = 0; var < hddListCount; var++) {
 
         QLabel *hddLabelName = new QLabel(this);
