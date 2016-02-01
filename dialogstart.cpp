@@ -63,13 +63,14 @@ void DialogStart::on_pushButton_clicked()
     ui->lineEditStart->setText(fileName);
     ui->label_filename->setVisible(false);
 
-    fileName.truncate(fileName.lastIndexOf("/"));
+    fileName.truncate(fileName.lastIndexOf("/")+1);
+    qDebug() << "filename: " << fileName;
 
     QStorageInfo storageSelected(fileName);
 
     if (storageSelected.isValid() && storageSelected.isReady()) {
 
-        destinationStorage = storageSelected.name();
+        destinationStorage = storageSelected.displayName();
         qDebug() << "stor start dialog: " << destinationStorage;
     }
     else qDebug() << "Invalid Drive";
