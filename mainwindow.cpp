@@ -214,20 +214,7 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
          }
      }
 
-
-    for(int hddcount = 0; hddcount < hddListCount; hddcount++){        
-
-        if(hddList[hddcount].label == destinationStorage){
-//            if(hddList[hddcount].state == "Ready" ) hddList[hddcount].state = "Busy";
-//            else hddList[hddcount].state = "Ready";
-            deviceInfoList->setHDDCurrentState(hddState, destinationStorage);
-
-            qDebug() << "-----> destinationstorage: " << destinationStorage;
-            qDebug() << "hdd label: " << hddList[hddcount].label;
-            qDebug() << "hdd state: " << hddState;
-        }
-        else qDebug() << "hdd not found!";
-    }
+    deviceInfoList->setHDDCurrentState(hddState, destinationStorage);
 
 }   
 
