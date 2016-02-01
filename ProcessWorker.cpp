@@ -24,6 +24,7 @@ void ProcessWorker::process(const QString &parentDevice, const QString &parentDe
     sourceDevice = parentDevice;
     destinationDevice = parentDestination;
     destinationStorageLocal = destinationStorage;
+    qDebug() << "Storage: " << destinationStorageLocal;
 
     QStringList args;
     QSysInfo wichOS;
