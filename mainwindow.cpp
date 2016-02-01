@@ -218,8 +218,8 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
 
     for(int hddcount = 0; hddcount < hddListCount; hddcount++){
         if(hddList[hddcount].label == destinationStorage){
-            if(hddList[hddcount].state == "Ready" ) hddList[hddcount].label = "Busy";
-            else hddList[hddcount].label = "Ready";
+            if(hddList[hddcount].state == "Ready" ) hddList[hddcount].state = "Busy";
+            else hddList[hddcount].state = "Ready";
         }
     }
 
