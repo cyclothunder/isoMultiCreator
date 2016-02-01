@@ -214,7 +214,7 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
          }
      }
 
-    qdebug() << "-----> destinationstorage: " << destinationStorage;
+    qDebug() << "-----> destinationstorage: " << destinationStorage;
 
     for(int hddcount = 0; hddcount < hddListCount; hddcount++){
         if(hddList[hddcount].label == destinationStorage){
