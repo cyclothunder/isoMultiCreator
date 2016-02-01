@@ -28,7 +28,7 @@ hardDisk *Misc::get_HardDrivesInfo()
     QString item;
 
     foreach (const QFileInfo drivesList, dirs.drives()){
-        qDebug() << drivesList.absolutePath();
+        qDebug() << "Drive List: " << drivesList.absolutePath();
     }
 
     int i=0;
@@ -54,6 +54,7 @@ hardDisk *Misc::get_HardDrivesInfo()
                    itemDisplayNameFix.replace("\\x20", " ");
                    item.append("Label: " + itemDisplayNameFix + "\n");
                    item.append("Device: " + deviceList.device() + "\n");
+
                    qint64 total_diskSize = deviceList.bytesTotal();
                    qint64 total_diskSize_temp = 0;
 

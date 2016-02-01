@@ -41,6 +41,7 @@ public:
     QString deviceSelected;
 
     qint64 getProcessID();
+    QString destinationStorage;
 
 public slots:
 
@@ -53,7 +54,7 @@ private slots:
 
     void on_pushButton_clicked();
 
-    void on_processStatusReady(const int state, const QString &sourceDevice, const QString &destination, const qint64 &pid);
+    void on_processStatusReady(const int state, const QString &sourceDevice, const QString &destination, const qint64 &pid, QString const destinationStorage);
 
 
     void on_buttonBox_accepted();
@@ -72,7 +73,7 @@ private:
 
 
 signals:
-    void processStateReady(int state, QString sourceDevice, QString destination, qint64 pid);
+    void processStateReady(int state, QString sourceDevice, QString destination, qint64 pid, QString destinationStorage);
     void processReadyToReadOutput(const QString &output);
     void send_SourceDestination(QString source, QString destination);
     void deviceFilename(QString thisSourceDevice, QString thisDestinationDevice);

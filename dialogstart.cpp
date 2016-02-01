@@ -5,12 +5,14 @@
 #include <QString>
 #include <QFileDialog>
 #include <QSysInfo>
+#include <QStorageInfo>
 
 DialogStart::DialogStart(const QStringList devList, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogStart)
 {
     ui->setupUi(this);    
+
 
     deviceListPathOnly = new Misc;
     QStringList devReadyStart = deviceListPathOnly->getDevicesReady();
@@ -49,6 +51,7 @@ DialogStart::~DialogStart()
 
 void DialogStart::on_processReadyToRead(const QString &output)
 {
+    qDebug() << "El Output: " << output;
  emit processReadyToReadOutput(output);
 }
 
@@ -60,11 +63,22 @@ void DialogStart::on_pushButton_clicked()
     ui->lineEditStart->setText(fileName);
     ui->label_filename->setVisible(false);
 
+    fileName.truncate(fileName.lastIndexOf("/"));
+
+    QStorageInfo storageSelected(fileName);
+
+    if (storageSelected.isValid() && storageSelected.isReady()) {
+
+        destinationStorage = storageSelected.name();
+    }
+    else qDebug() << "Invalid Drive";
+
+
 }
 
-void DialogStart::on_processStatusReady(const int state, const QString &sourceDevice, const QString &destination, const qint64 &pid)
+void DialogStart::on_processStatusReady(const int state, const QString &sourceDevice, const QString &destination, const qint64 &pid, const QString destinationStorage)
 {
- emit processStateReady(state,sourceDevice,destination, pid);
+ emit processStateReady(state,sourceDevice,destination, pid, destinationStorage);
 }
 
 //void DialogStart::on_send_SourceDestination(QString source, QString destination)
@@ -94,9 +108,9 @@ void DialogStart::on_buttonBox_accepted()
             qint64 pid;
 
             connect(process,SIGNAL(processOutput(QString)),this,SLOT(on_processReadyToRead(QString)));
-            connect(process,SIGNAL(stateReady(int,QString,QString, qint64)),this,SLOT(on_processStatusReady(int,QString,QString, qint64)));
+            connect(process,SIGNAL(stateReady(int,QString,QString, qint64, QString)),this,SLOT(on_processStatusReady(int,QString,QString, qint64, QString)));
 
-            process->process(deviceSelected,filenameSelected,volumeSelected);
+            process->process(deviceSelected,filenameSelected,volumeSelected,destinationStorage);
             pid = process->processId();
 
             setProcessID(pid);
@@ -122,9 +136,9 @@ void DialogStart::on_buttonBox_accepted()
             qint64 pid;
 
             connect(process,SIGNAL(processOutput(QString)),this,SLOT(on_processReadyToRead(QString)));
-            connect(process,SIGNAL(stateReady(int,QString,QString,qint64)),this,SLOT(on_processStatusReady(int,QString,QString,qint64)));
+            connect(process,SIGNAL(stateReady(int,QString,QString,qint64, QString)),this,SLOT(on_processStatusReady(int,QString,QString,qint64, QString)));
 
-            process->process(deviceSelected,filenameSelected);
+            process->process(deviceSelected,filenameSelected,destinationStorage);
             pid = process->processId();
 
             setProcessID(pid);

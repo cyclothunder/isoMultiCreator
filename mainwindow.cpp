@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     deviceInfoListModel = new QStringListModel(deviceInfoList->get_ROdevicesInfo());
     ui->listView_Status->setModel(deviceInfoListModel);
 
-    int hddListCount = 0;
+    hddListCount = 0;
     foreach (const QStorageInfo &deviceList, QStorageInfo::mountedVolumes()){
            if (deviceList.isValid() && deviceList.isReady()) {
                if (!deviceList.isReadOnly()) {
@@ -30,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
            }
     }
 
-        hardDisk* hddList = new hardDisk[hddListCount];
+        hddList = new hardDisk[hddListCount];
         hddList = deviceInfoList->get_HardDrivesInfo();
 
 
@@ -77,8 +77,8 @@ void MainWindow::on_pushButton_Start_clicked()
 
     // dialog_StartJob->setDevicesReady(deviceNotReadyAfterOpened);
 
-    connect(dialog_StartJob,SIGNAL(processStateReady(int,QString,QString, qint64)),this,SLOT(on_processStateChange(int,QString,QString, qint64)));
-
+    connect(dialog_StartJob,SIGNAL(processStateReady(int,QString,QString, qint64, QString)),this,SLOT(on_processStateChange(int,QString,QString, qint64, QString)));
+    connect(dialog_StartJob,SIGNAL(processReadyToReadOutput(QString)),this,SLOT(readOutput(QString)));
     // connect(dialog_eject,SIGNAL(processStateReady(int,QString)),this,SLOT(on_processStateChange(int,QString)));
     dialog_StartJob->setWindowTitle("Start Job");
 
@@ -133,7 +133,7 @@ void MainWindow::on_pushButtonRefresh_clicked()
 
 */
 
-void MainWindow::on_processStateChange(const int state, const QString &sourceDevice, const QString &destination, const qint64 &pid)
+void MainWindow::on_processStateChange(const int state, const QString &sourceDevice, const QString &destination, const qint64 &pid, const QString destinationStorage)
 {
 
     qDebug() << "State of device" << sourceDevice << "is" << state;
@@ -146,14 +146,17 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
             case 0:
                 strState = "Ready";
                 deviceReady << sourceDevice;
+                hddState << destinationStorage;
                 break;
             case 1:
                 strState = "Starting";
                 deviceNotReady << sourceDevice;
+                hddState << destinationStorage;
                 break;
             case 2:
                 strState = "Running";
                 deviceNotReady << sourceDevice;
+                hddState << destinationStorage;
                 break;
             }
 
@@ -161,8 +164,7 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
             if(temp.at(3).contains("Running") == false)
                 temp.replace(3,"State: " + strState );
 
-            deviceInfoListModel->setData(deviceInfoListModel->index(i),temp.join("\n"));
-
+            deviceInfoListModel->setData(deviceInfoListModel->index(i),temp.join("\n"));  
 
         }
     }
@@ -212,6 +214,13 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
          }
      }
 
+    for(int hddcount = 0; hddcount < hddListCount; hddcount++){
+        if(hddList[hddcount].label == destinationStorage){
+            if(hddList[hddcount].state == "Ready" ) hddList[hddcount].label = "Busy";
+            else hddList[hddcount].label = "Ready";
+        }
+    }
+
 }   
 
 void MainWindow::deviceListUpdate()
@@ -259,5 +268,37 @@ void MainWindow::deviceListUpdate()
     deviceInfoList->setDevicesCurrentState(temp2);
 
 
+    hddList = deviceInfoList->get_HardDrivesInfo();
+    hddListCount = 0;
+    foreach (const QStorageInfo &deviceList, QStorageInfo::mountedVolumes()){
+           if (deviceList.isValid() && deviceList.isReady()) {
+               if (!deviceList.isReadOnly()) {
+                   hddListCount++;
+               }
+           }
+    }
+
+    QLayoutItem *child;
+    while( (child = ui->hddLayout->takeAt(0)) != 0) {
+        delete child->widget();
+        delete child;
+    }
+
+    for (int var = 0; var < hddListCount; var++) {
+
+        QLabel *hddLabelName = new QLabel(this);
+        hddLabelName->setText(hddList[var].label + "\n" +
+                              "Free: " + hddList[var].freeBytes + " Gb\n" +
+                              hddList[var].state + "\n");
+
+        ui->hddLayout->addWidget(hddLabelName);
+
+    }
+
+
+}
+
+void MainWindow::readOutput(QString output){
+    qDebug() << "ALL OUTPUT: " << output;
 }
 

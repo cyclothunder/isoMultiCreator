@@ -47,9 +47,11 @@ private slots:
 
 //    void on_pushButtonRefresh_clicked();
 
-    void on_processStateChange(const int state, const QString &sourceDevice, const QString &destination, const qint64 &pid);
+    void on_processStateChange(const int state, const QString &sourceDevice, const QString &destination, const qint64 &pid, const QString destinationStorage);
 
     void deviceListUpdate();
+
+    void readOutput(QString output);
 
 
 private:
@@ -58,12 +60,15 @@ private:
     Misc *deviceInfoList;
     Misc deviceInfoListStateUpdated;
 
+    hardDisk *hddList;
+    int hddListCount;
+
     QStringListModel *deviceInfoListModel, *deviceInfoListModel2;
 
     DialogStart *dialog_StartJob;
     DialogStop *dialog_StopJob;
     DialogEject *dialog_eject;
-    QStringList deviceReady, deviceNotReady, deviceStateUpdated;
+    QStringList deviceReady, deviceNotReady, deviceStateUpdated, hddState, hddNotReady;
     QStringList deviceReadyAfterOpened;
     QStringList deviceNotReadyAfterOpened;
 

@@ -17,18 +17,18 @@ public:
     void processKill(const QString &parentDevice, const qint64 &parentPid);
 
 private:
-    QString sourceDevice, destinationDevice, volumeDevice;
+    QString sourceDevice, destinationDevice, volumeDevice, destinationStorageLocal;
     QTimer *timer;
     qint64 processPid;
 
 signals:
     void processOutput(QString output);
-    void stateReady(int state, QString thisSourceDevice, QString thisDestination, qint64 thisPid);
+    void stateReady(int state, QString thisSourceDevice, QString thisDestination, qint64 thisPid, QString thisDestinationStorage);
 
 
 public slots:
-    void process(const QString &parentDevice, const QString &parentDestination);
-    void process(const QString &parentDevice, const QString &parentDestination, const QString &parentVolume);
+    void process(const QString &parentDevice, const QString &parentDestination, const QString &destinationStorage);
+    void process(const QString &parentDevice, const QString &parentDestination, const QString &parentVolume, const QString &destinationStorage);
     void processEject(const QString &parentDevice);
 
 

@@ -17,12 +17,13 @@ ProcessWorker::ProcessWorker(QObject *parent):
 
 }
 
-void ProcessWorker::process(const QString &parentDevice, const QString &parentDestination)
+void ProcessWorker::process(const QString &parentDevice, const QString &parentDestination, const QString &destinationStorage)
 {
 
 
     sourceDevice = parentDevice;
     destinationDevice = parentDestination;
+    destinationStorageLocal = destinationStorage;
 
     QStringList args;
     QSysInfo wichOS;
@@ -47,13 +48,14 @@ void ProcessWorker::process(const QString &parentDevice, const QString &parentDe
 
 }
 
-void ProcessWorker::process(const QString &parentDevice, const QString &parentDestination, const QString &parentVolume)
+void ProcessWorker::process(const QString &parentDevice, const QString &parentDestination, const QString &parentVolume, const QString &destinationStorage)
 {
 
 
     sourceDevice = parentDevice;
     volumeDevice = parentVolume;
     destinationDevice = parentDestination;
+    destinationStorageLocal = destinationStorage;
 
     QStringList args;
     QSysInfo wichOS;
@@ -75,6 +77,7 @@ void ProcessWorker::process(const QString &parentDevice, const QString &parentDe
 
 
     this->waitForStarted();
+
 
 }
 
@@ -114,9 +117,12 @@ void ProcessWorker::onProcessReadyToRead()
 {
 
     if (!this->isOpen()) this->open(QIODevice::ReadOnly);
-    QString output = QString::fromLatin1(this->readAll());
+    QString output = QString::fromLatin1(this->readAllStandardOutput());
+    QByteArray output2 = this->readAllStandardOutput();
+
 
     // YOUR CODE HERE
+    qDebug() << "OUTPUT: " << output2;
 
     emit processOutput(output);
 }
@@ -135,6 +141,7 @@ void ProcessWorker::onFinished(int exitCode, QProcess::ExitStatus status)
     } else emit finished(exitCode);
 
     qDebug() << "Process Finished for " + sourceDevice;
+
     QProcess::execute("eject",args);
 
     processPid = 0;
@@ -145,8 +152,8 @@ void ProcessWorker::onStateChange()
     QSysInfo wichOS;
 
     if(wichOS.kernelType() == "darwin")
-        emit stateReady(this->state(),sourceDevice, volumeDevice, processPid);
-     else emit stateReady(this->state(),sourceDevice,destinationDevice, processPid);
+        emit stateReady(this->state(),sourceDevice, volumeDevice, processPid, destinationStorageLocal);
+     else emit stateReady(this->state(),sourceDevice,destinationDevice, processPid, destinationStorageLocal);
 
 }
 
