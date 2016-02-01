@@ -214,7 +214,6 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
          }
      }
 
-    qDebug() << "-----> destinationstorage: " << destinationStorage;
 
     for(int hddcount = 0; hddcount < hddListCount; hddcount++){        
 
@@ -223,6 +222,7 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
 //            else hddList[hddcount].state = "Ready";
             hddList[hddcount].state = hddState;
 
+            qDebug() << "-----> destinationstorage: " << destinationStorage;
             qDebug() << "hdd label: " << hddList[hddcount].label;
             qDebug() << "hdd state: " << hddState;
         }
