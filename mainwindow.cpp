@@ -292,7 +292,7 @@ void MainWindow::deviceListUpdate()
         delete child;
     }
 
-    *hddList = deviceInfoList->getHDDCurrentState();
+    hddList = deviceInfoList->getHDDCurrentState();
     for (int var = 0; var < hddListCount; var++) {
 
         QLabel *hddLabelName = new QLabel(this);
