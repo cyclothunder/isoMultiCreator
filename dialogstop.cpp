@@ -12,7 +12,7 @@ DialogStop::DialogStop(const QStringList devList, QMap<QString, qint64> parentMa
     currentDevPidMap = parentMap;
     currentHddPidMap = parentHddMap;
 
-    QMapIterator<QString, qint64> iter_currentDevPidMap(currentDevPidMap);
+    QMapIterator<QString, qint64> iter_currentDevPidMap(currentHddPidMap);
 
     while(iter_currentDevPidMap.hasNext()){
         iter_currentDevPidMap.next();
