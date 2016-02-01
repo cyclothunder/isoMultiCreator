@@ -217,6 +217,9 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
     qDebug() << "-----> destinationstorage: " << destinationStorage;
 
     for(int hddcount = 0; hddcount < hddListCount; hddcount++){
+
+        qDebug() << "hdd label: " << hddList[hddcount].label;
+
         if(hddList[hddcount].label == destinationStorage){
 //            if(hddList[hddcount].state == "Ready" ) hddList[hddcount].state = "Busy";
 //            else hddList[hddcount].state = "Ready";
