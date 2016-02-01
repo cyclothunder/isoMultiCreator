@@ -46,6 +46,10 @@ public:
     qint64 getDevPID(QString devices);
     QMap<QString, qint64> getMapDevPid();
     void toggleHddState(QString dev);
+
+    QMap<QString, qint64> hddstorpid;
+    void setHddStoragePid(QString storSelected, qint64 storPid);
+    QMap<QString, qint64> getHddStoragePid();
 };
 
 #endif // MISC_H

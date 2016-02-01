@@ -99,7 +99,7 @@ void MainWindow::on_pushButton_Stop_clicked()
     QMap<QString, qint64> currentDevPids = deviceInfoList->getMapDevPid();
 
 //    dialog_StopJob = new DialogStop(deviceNotReady, &currentDevPids, this);
-    dialog_StopJob = new DialogStop(deviceNotReady, devPidList, this);
+    dialog_StopJob = new DialogStop(deviceNotReady, devPidList, hddPidList, this);
 
     dialog_StopJob->setWindowTitle("Stop Job");
     dialog_StopJob->show();
@@ -189,12 +189,14 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
         onStateChangeToRunning = sourceDevice;
         filenameMap[sourceDevice] = destination;
         devPidList[sourceDevice] = pid;
+        // hddPidList[destinationStorage] = pid;
     }
     else{
         if(state == 0){
 
             filenameMap.remove(sourceDevice);
             devPidList.remove(sourceDevice);
+            // hddPidList.remove(destinationStorage);
 
             int devicesRunning = 0;
 

@@ -198,6 +198,14 @@ void Misc::setHDDCurrentState(QString parentHddState, QString parentDestinationS
     }
 }
 
+void Misc::setHddStoragePid(QString storSelected, qint64 storPid){
+    hddstorpid[storSelected] = storPid;
+}
+
+QMap<QString, qint64> Misc::getHddStoragePid(){
+    return hddstorpid;
+}
+
 hardDisk *Misc::getHDDCurrentState(){
     return currentHardDiskList;
 }

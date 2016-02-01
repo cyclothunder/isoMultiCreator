@@ -29,7 +29,7 @@ public:
     ~MainWindow();
     QTimer *timer;
     QMap<QString, QString> filenameMap;
-    QMap<QString, qint64> devPidList;
+    QMap<QString, qint64> devPidList, hddPidList;
     devices *devicePidListStruct[0];
     int structSize;
 

@@ -17,9 +17,9 @@ class DialogStop : public QDialog
     Q_OBJECT
 
 public:
-    explicit DialogStop(const QStringList devList, QMap<QString, qint64> parentMap, QWidget *parent = 0);
+    explicit DialogStop(const QStringList devList, QMap<QString, qint64> parentMap, QMap<QString, qint64> parenthddMap, QWidget *parent = 0);
     ~DialogStop();
-    QMap<QString, qint64> currentDevPidMap;
+    QMap<QString, qint64> currentDevPidMap, currentHddPidMap;
     QStringList devReadyVolumes;
 
 private slots:
