@@ -68,11 +68,11 @@ private:
     DialogStart *dialog_StartJob;
     DialogStop *dialog_StopJob;
     DialogEject *dialog_eject;
-    QStringList deviceReady, deviceNotReady, deviceStateUpdated, hddState, hddNotReady;
+    QStringList deviceReady, deviceNotReady, deviceStateUpdated, hddNotReady;
     QStringList deviceReadyAfterOpened;
     QStringList deviceNotReadyAfterOpened;
 
-    QString onStateChangeToRunning;
+    QString onStateChangeToRunning, hddState;
 
     void set_Device_onStateChangeToRunning();
     QString get_Device_onStateChangeToRunning(QString deviceChangedToRunning);

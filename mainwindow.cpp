@@ -146,17 +146,17 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
             case 0:
                 strState = "Ready";
                 deviceReady << sourceDevice;
-                hddState << destinationStorage;
+                hddState = "Ready";
                 break;
             case 1:
                 strState = "Starting";
                 deviceNotReady << sourceDevice;
-                hddState << destinationStorage;
+                hddState = "Busy";
                 break;
             case 2:
                 strState = "Running";
                 deviceNotReady << sourceDevice;
-                hddState << destinationStorage;
+                hddState = "Busy";
                 break;
             }
 
@@ -218,8 +218,9 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
 
     for(int hddcount = 0; hddcount < hddListCount; hddcount++){
         if(hddList[hddcount].label == destinationStorage){
-            if(hddList[hddcount].state == "Ready" ) hddList[hddcount].state = "Busy";
-            else hddList[hddcount].state = "Ready";
+//            if(hddList[hddcount].state == "Ready" ) hddList[hddcount].state = "Busy";
+//            else hddList[hddcount].state = "Ready";
+            hddList[hddcount].state = hddState;
         }
     }
 
