@@ -200,6 +200,13 @@ void Misc::setHDDCurrentState(QString parentHddState, QString parentDestinationS
 
 void Misc::setHddStoragePid(QString storSelected, qint64 storPid){
     hddstorpid[storSelected] = storPid;
+
+    QMapIterator<QString, qint64> iter_currentDevPidMap(hddstorpid);
+
+    while(iter_currentDevPidMap.hasNext()){
+        iter_currentDevPidMap.next();
+        qDebug() << "Set Storage PID: device - "<< iter_currentDevPidMap.key() << " | PID: "<< iter_currentDevPidMap.value();
+    }
 }
 
 QMap<QString, qint64> Misc::getHddStoragePid(){
