@@ -70,6 +70,7 @@ void DialogStart::on_pushButton_clicked()
     if (storageSelected.isValid() && storageSelected.isReady()) {
 
         destinationStorage = storageSelected.name();
+        qDebug() << "stor start dialog: " << destinationStorage;
     }
     else qDebug() << "Invalid Drive";
 
