@@ -71,6 +71,8 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_Start_clicked()
 {
 
+    deviceReadyAfterOpened = deviceInfoList->getDevicesReady();
+
     if (deviceReadyAfterOpened.empty() == true){
         QMessageBox msgBox;
         msgBox.setText("Insert a CD first");
@@ -80,7 +82,7 @@ void MainWindow::on_pushButton_Start_clicked()
         msgBox.exec();
     }
     else{
-        deviceReadyAfterOpened = deviceInfoList->getDevicesReady();
+
 
         dialog_StartJob = new DialogStart(deviceReadyAfterOpened, this);
 
