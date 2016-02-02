@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <misc.h>
 #include <QStringListModel>
+#include <QMessageBox>
 
 namespace Ui {
 class DialogStart;

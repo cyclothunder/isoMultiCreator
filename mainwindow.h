@@ -8,6 +8,7 @@
 #include "misc.h"
 #include "ProcessWorker.h"
 #include <QStringListModel>
+#include <QMessageBox>
 
 namespace Ui {
 class MainWindow;

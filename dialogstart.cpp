@@ -75,6 +75,23 @@ void DialogStart::on_pushButton_clicked()
     }
     else qDebug() << "Invalid Drive";
 
+    // Ver se o HDD selecionado está em uso
+
+    QStringList hddBusyList = deviceListPathOnly->getHddBusy();
+    if ( hddBusyList.contains(destinationStorage) ){
+        QMessageBox msgBox;
+        msgBox.setText("This Storage is already in use.");
+        msgBox.setInformativeText("Continue Anyway?");
+        msgBox.setIcon(QMessageBox::Information);
+        msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Cancel);
+        int ret = msgBox.exec();
+
+        if (ret == QMessageBox::Cancel){
+            ui->lineEditStart->setText("");
+        }
+    }
+
 
 }
 

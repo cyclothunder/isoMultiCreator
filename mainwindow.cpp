@@ -71,24 +71,36 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_Start_clicked()
 {
 
-    deviceReadyAfterOpened = deviceInfoList->getDevicesReady();
+    if (deviceReadyAfterOpened.empty() == true){
+        QMessageBox msgBox;
+        msgBox.setText("Insert a CD first");
+        msgBox.setIcon(QMessageBox::Information);
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        msgBox.exec();
+    }
+    else{
+        deviceReadyAfterOpened = deviceInfoList->getDevicesReady();
 
-    dialog_StartJob = new DialogStart(deviceReadyAfterOpened, this);
+        dialog_StartJob = new DialogStart(deviceReadyAfterOpened, this);
 
-    // dialog_StartJob->setDevicesReady(deviceNotReadyAfterOpened);
+        // dialog_StartJob->setDevicesReady(deviceNotReadyAfterOpened);
 
-    connect(dialog_StartJob,SIGNAL(processStateReady(int,QString,QString, qint64, QString)),this,SLOT(on_processStateChange(int,QString,QString, qint64, QString)));
-    connect(dialog_StartJob,SIGNAL(processReadyToReadOutput(QString)),this,SLOT(readOutput(QString)));
-    // connect(dialog_eject,SIGNAL(processStateReady(int,QString)),this,SLOT(on_processStateChange(int,QString)));
-    dialog_StartJob->setWindowTitle("Start Job");
+        connect(dialog_StartJob,SIGNAL(processStateReady(int,QString,QString, qint64, QString)),this,SLOT(on_processStateChange(int,QString,QString, qint64, QString)));
+        connect(dialog_StartJob,SIGNAL(processReadyToReadOutput(QString)),this,SLOT(readOutput(QString)));
+        // connect(dialog_eject,SIGNAL(processStateReady(int,QString)),this,SLOT(on_processStateChange(int,QString)));
+        dialog_StartJob->setWindowTitle("Start Job");
 
-    dialog_StartJob->show();
+        dialog_StartJob->show();
 
 
-    // QMap<QString, qint64> allDevicesProcessID[tempDeviceSelected] = tempProcessID;
+        // QMap<QString, qint64> allDevicesProcessID[tempDeviceSelected] = tempProcessID;
 
-//    timer = new QTimer(this);
-//        connect(timer, SIGNAL(timeout()), this, SLOT(deviceListUpdate()));
+    //    timer = new QTimer(this);
+    //        connect(timer, SIGNAL(timeout()), this, SLOT(deviceListUpdate()));
+    }
+
+
 
 }
 
@@ -98,11 +110,24 @@ void MainWindow::on_pushButton_Stop_clicked()
     deviceNotReady = deviceInfoList->getDevicesNotReady();
     QMap<QString, qint64> currentDevPids = deviceInfoList->getMapDevPid();
 
-//    dialog_StopJob = new DialogStop(deviceNotReady, &currentDevPids, this);
-    dialog_StopJob = new DialogStop(deviceNotReady, devPidList, this);
+    if (deviceNotReady.empty() == true){
+        QMessageBox msgBox;
+        msgBox.setText("No Jobs Running");
+        msgBox.setIcon(QMessageBox::Information);
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        msgBox.exec();
+    }
+    else{
 
-    dialog_StopJob->setWindowTitle("Stop Job");
-    dialog_StopJob->show();
+        //    dialog_StopJob = new DialogStop(deviceNotReady, &currentDevPids, this);
+            dialog_StopJob = new DialogStop(deviceNotReady, devPidList, this);
+
+            dialog_StopJob->setWindowTitle("Stop Job");
+            dialog_StopJob->show();
+    }
+
+
 }
 
 void MainWindow::on_pushButtonEject_clicked()
@@ -111,10 +136,21 @@ void MainWindow::on_pushButtonEject_clicked()
 
     deviceReadyAfterOpened = deviceInfoList->getDevicesReady();
 
-    dialog_eject = new DialogEject(deviceReadyAfterOpened, this);
-    // connect(dialog_eject,SIGNAL(processStateReady(int,QString)),this,SLOT(on_processStateChange(int,QString)));
-    dialog_eject->setWindowTitle("Eject CD");
-    dialog_eject->show();
+    if (deviceNotReady.empty() == true){
+        QMessageBox msgBox;
+        msgBox.setText("No Jobs Running");
+        msgBox.setIcon(QMessageBox::Information);
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        msgBox.exec();
+    }
+    else{
+        dialog_eject = new DialogEject(deviceReadyAfterOpened, this);
+        // connect(dialog_eject,SIGNAL(processStateReady(int,QString)),this,SLOT(on_processStateChange(int,QString)));
+        dialog_eject->setWindowTitle("Eject CD");
+        dialog_eject->show();
+    }
+
 }
 
 /*

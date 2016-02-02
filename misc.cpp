@@ -225,6 +225,26 @@ hardDisk *Misc::getHDDCurrentState(){
     return currentHardDiskList;
 }
 
+QStringList Misc::getHddBusy(){
+    int hddListCount = 0;
+    QStringList temp_hddReady;
+    foreach (const QStorageInfo &deviceList, QStorageInfo::mountedVolumes()){
+           if (deviceList.isValid() && deviceList.isReady()) {
+               if (!deviceList.isReadOnly()) {
+                   hddListCount++;
+               }
+           }
+    }
+
+    for(int hddcount = 0; hddcount < hddListCount; hddcount++){
+        if ( currentHardDiskList[hddcount].state == "Busy"){
+            temp_hddReady << currentHardDiskList[hddcount].label;
+        }
+    }
+
+    return temp_hddReady;
+}
+
 void Misc::setDevicesCurrentState(QStringList parentList){
     devicesCurrentState = parentList;
 }

@@ -58,6 +58,7 @@ public:
 
     void insertHddCDromMAP(QString parentState, QString parentDestinationStorage, QString parentCDrom);
     void removeHddCDromMAP(QString parentCDrom);
+    QStringList getHddBusy();
 
 };
 
