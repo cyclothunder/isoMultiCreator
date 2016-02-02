@@ -196,23 +196,29 @@ void Misc::setHDDCurrentState(QString parentHddState, QString parentDestinationS
         }
         else qDebug() << "hdd not found!";
     }
+
+
 }
 
-void Misc::setHddStoragePid(QString storSelected, qint64 storPid){
-    hddstorpid[storSelected] = storPid;
+void Misc::insertHddCDromMAP(QString parentState, QString parentDestinationStorage, QString parentCDrom){
 
-    qDebug() << "STORAGE SELECTED - " << storSelected;
+    hdd_cdromStateUpdated.insertMulti(parentDestinationStorage, parentCDrom);
+    setHDDCurrentState(parentState, parentDestinationStorage);
 
-    QMapIterator<QString, qint64> iter_currentDevPidMap(hddstorpid);
+}
 
-    while(iter_currentDevPidMap.hasNext()){
-        iter_currentDevPidMap.next();
-        qDebug() << "Set Storage PID: device - "<< iter_currentDevPidMap.key() << " | PID: "<< iter_currentDevPidMap.value();
+void Misc::removeHddCDromMAP(QString parentCDrom){
+
+    QString currentStorageToStop = hdd_cdromStateUpdated.key(parentCDrom);
+
+    hdd_cdromStateUpdated.remove(currentStorageToStop, parentCDrom);
+
+    if ( hdd_cdromStateUpdated.contains(currentStorageToStop) == true ){
+
+        setHDDCurrentState("Busy", currentStorageToStop);
     }
-}
+    else setHDDCurrentState("Ready", currentStorageToStop);
 
-QMap<QString, qint64> Misc::getHddStoragePid(){
-    return hddstorpid;
 }
 
 hardDisk *Misc::getHDDCurrentState(){

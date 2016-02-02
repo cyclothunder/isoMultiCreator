@@ -2,7 +2,7 @@
 #include "ui_dialogstop.h"
 
 
-DialogStop::DialogStop(const QStringList devList, QMap<QString, qint64> parentMap, QMap<QString, qint64> parentHddMap, QWidget *parent) :
+DialogStop::DialogStop(const QStringList devList, QMap<QString, qint64> parentMap, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogStop)
 {
@@ -10,9 +10,8 @@ DialogStop::DialogStop(const QStringList devList, QMap<QString, qint64> parentMa
     deviceListPathOnly = new Misc;
 
     currentDevPidMap = parentMap;
-    currentHddPidMap = parentHddMap;
 
-    QMapIterator<QString, qint64> iter_currentDevPidMap(currentHddPidMap);
+    QMapIterator<QString, qint64> iter_currentDevPidMap(currentDevPidMap);
 
     while(iter_currentDevPidMap.hasNext()){
         iter_currentDevPidMap.next();
@@ -75,15 +74,14 @@ void DialogStop::on_buttonBoxStop_accepted()
 
 
         qint64 temp_pid = currentDevPidMap.value(ui->comboBoxStop->currentText());
-        QString temp_hddStorage = currentHddPidMap.key(temp_pid);
-
 
         if(msgBox == QMessageBox::Ok){
             // deviceListPathOnly->setHddStoragePid(temp_hddStorage, temp_pid);
             ProcessWorker *processStop = new ProcessWorker(this);
             processStop->processKill(ui->comboBoxStop->currentText(), temp_pid);
-            deviceListPathOnly->setHDDCurrentState("Ready", temp_hddStorage);
-            qDebug() << "Stopping - " << temp_hddStorage << " | State: " << "Ready";
+
+            deviceListPathOnly->removeHddCDromMAP(ui->comboBoxStop->currentText());
+
             this->close();
         }
 

@@ -97,10 +97,9 @@ void MainWindow::on_pushButton_Stop_clicked()
 
     deviceNotReady = deviceInfoList->getDevicesNotReady();
     QMap<QString, qint64> currentDevPids = deviceInfoList->getMapDevPid();
-    hddPidList = deviceInfoList->getHddStoragePid();
 
 //    dialog_StopJob = new DialogStop(deviceNotReady, &currentDevPids, this);
-    dialog_StopJob = new DialogStop(deviceNotReady, devPidList, hddPidList, this);
+    dialog_StopJob = new DialogStop(deviceNotReady, devPidList, this);
 
     dialog_StopJob->setWindowTitle("Stop Job");
     dialog_StopJob->show();
@@ -190,6 +189,8 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
         onStateChangeToRunning = sourceDevice;
         filenameMap[sourceDevice] = destination;
         devPidList[sourceDevice] = pid;
+
+        deviceInfoList->insertHddCDromMAP(hddState, destinationStorage, sourceDevice);
         // hddPidList[destinationStorage] = pid;
     }
     else{
@@ -197,6 +198,8 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
 
             filenameMap.remove(sourceDevice);
             devPidList.remove(sourceDevice);
+            deviceInfoList->removeHddCDromMAP(sourceDevice);
+
             // hddPidList.remove(destinationStorage);
 
             int devicesRunning = 0;
@@ -216,8 +219,6 @@ void MainWindow::on_processStateChange(const int state, const QString &sourceDev
 
          }
      }
-
-    deviceInfoList->setHDDCurrentState(hddState, destinationStorage);
 
 }   
 

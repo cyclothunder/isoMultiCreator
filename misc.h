@@ -39,6 +39,8 @@ public:
     hardDisk *getHDDCurrentState();
     void setHDDCurrentState(QString parentHddState, QString parentDestinationStorage);
 
+    void setHDDCurrentState2(QString parentHddState, QString parentDestinationStorage);
+
     QStringList getDevicesCurrentState();
     QString get_OSXvolumes(QString parentDevice);
 
@@ -47,9 +49,16 @@ public:
     QMap<QString, qint64> getMapDevPid();
     void toggleHddState(QString dev);
 
-    QMap<QString, qint64> hddstorpid;
+    QMultiMap<QString, QString> hdd_cdromStateUpdated;
+
     void setHddStoragePid(QString storSelected, qint64 storPid);
     QMap<QString, qint64> getHddStoragePid();
+    QMap<QString, QString> getHddStoragePid2();
+    QMap<QString, QString> getHddStorage2();
+
+    void insertHddCDromMAP(QString parentState, QString parentDestinationStorage, QString parentCDrom);
+    void removeHddCDromMAP(QString parentCDrom);
+
 };
 
 #endif // MISC_H

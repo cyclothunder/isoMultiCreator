@@ -29,7 +29,8 @@ public:
     ~MainWindow();
     QTimer *timer;
     QMap<QString, QString> filenameMap;
-    QMap<QString, qint64> devPidList, hddPidList;
+    QMultiMap<QString, QString> hdd_cdromMap;
+    QMap<QString, qint64> devPidList;
     devices *devicePidListStruct[0];
     int structSize;
 
